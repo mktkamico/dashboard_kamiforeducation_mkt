@@ -116,6 +116,22 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 #enroll-strip .kpi.pink .kpi-value{color:#0e8a5f;}
 #enroll-strip .kpi.pink::before{background:#0e8a5f;}
 @media(max-width:600px){body{padding:14px;}.kpi-strip{grid-template-columns:1fr 1fr;}}
+
+/* ── Pós-Curso ── */
+.fu-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:20px;}
+.fu-section h2{font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:18px;}
+.fu-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+.fu-kpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.fu-kpi .kpi-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.fu-kpi .kpi-value{font-size:1.6rem;font-weight:800;line-height:1;}
+.fu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.fu-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.fu-card-title{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.fu-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.fu-tag{border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
+.fu-tag-count{border-radius:10px;padding:1px 6px;font-size:.68rem;font-weight:700;}
+.fu-quote{border-radius:8px;padding:11px 14px;border-left:3px solid transparent;margin-bottom:8px;font-size:.8rem;line-height:1.5;font-style:italic;}
+.fu-quote-meta{font-size:.68rem;margin-top:5px;opacity:.6;font-style:normal;font-weight:600;}
 </style>
 </head>
 <body>
@@ -128,7 +144,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
       Período de análise: Março — Maio 2026
     </div>
   </div>
-  <span class="badge" style="background:rgba(0,0,0,.25);color:#f0eee8;">Atualizado: 13/05/2026</span>
+  <span class="badge" style="background:rgba(0,0,0,.25);color:#f0eee8;">Atualizado: 12/05/2026</span>
 </header>
 
 <!-- Filter bar -->
@@ -188,10 +204,10 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
 <!-- Enrollment KPIs -->
 <div class="kpi-strip" id="enroll-strip" style="margin-bottom:20px">
-  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">100</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
-  <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">53</div><div class="kpi-sub" id="kpi-presentes-sub">de 100 inscritos</div></div>
-  <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">53%</div><div class="kpi-sub">do total inscrito</div></div>
-  <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">47</div><div class="kpi-sub" id="kpi-faltaram-sub">de 100 inscritos</div></div>
+  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">180</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
+  <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">105</div><div class="kpi-sub" id="kpi-presentes-sub">de 180 inscritos</div></div>
+  <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">58%</div><div class="kpi-sub">do total inscrito</div></div>
+  <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">75</div><div class="kpi-sub" id="kpi-faltaram-sub">de 180 inscritos</div></div>
 </div>
 
 <!-- KPIs -->
@@ -343,186 +359,256 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
   </div>
 </div>
 
+<!-- ─── PESQUISA PÓS-CURSO ─── -->
+<div class="fu-section">
+  <h2>Pesquisa Pós-Curso — Quem Não Foi &amp; Quem Foi</h2>
+
+  <!-- KPIs -->
+  <div class="fu-kpi-row">
+    <div class="fu-kpi">
+      <div class="kpi-label">Respondentes (faltaram)</div>
+      <div class="kpi-value" id="fu-nao-resp" style="color:var(--accent)">—</div>
+    </div>
+    <div class="fu-kpi">
+      <div class="kpi-label">Querem retornar</div>
+      <div class="kpi-value" id="fu-retorno" style="color:#6af7c8">—</div>
+    </div>
+    <div class="fu-kpi">
+      <div class="kpi-label">Respondentes (foram)</div>
+      <div class="kpi-value" id="fu-comp-resp" style="color:var(--accent)">—</div>
+    </div>
+    <div class="fu-kpi">
+      <div class="kpi-label">Conseguiram aplicar</div>
+      <div class="kpi-value" id="fu-aplicou-pct" style="color:#6af7c8">—</div>
+    </div>
+  </div>
+
+  <!-- Cards grid -->
+  <div class="fu-grid">
+    <!-- Motivos de ausência -->
+    <div class="fu-card">
+      <div class="fu-card-title">Motivos de ausência</div>
+      <div id="fu-motivos"></div>
+      <p id="fu-motivos-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+
+    <!-- Interesse em retornar -->
+    <div class="fu-card">
+      <div class="fu-card-title">Interesse em participar novamente</div>
+      <div id="fu-retorno-vis" style="margin-bottom:12px"></div>
+      <div class="fu-tags" id="fu-retorno-tags"></div>
+      <p id="fu-retorno-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+
+    <!-- Dores do salão -->
+    <div class="fu-card">
+      <div class="fu-card-title">Principais dores do salão</div>
+      <div class="fu-tags" id="fu-dores"></div>
+      <div id="fu-dores-quotes" style="margin-top:10px"></div>
+      <p id="fu-dores-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+
+    <!-- Interesse em evoluir -->
+    <div class="fu-card">
+      <div class="fu-card-title">Áreas de interesse em evoluir</div>
+      <div class="fu-tags" id="fu-evoluir"></div>
+      <div id="fu-evoluir-quotes" style="margin-top:10px"></div>
+      <p id="fu-evoluir-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+
+    <!-- Conseguiu aplicar -->
+    <div class="fu-card" style="grid-column:1/-1">
+      <div class="fu-card-title">O que conseguiu aplicar (quem foi ao curso)</div>
+      <div id="fu-aplicou-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px"></div>
+      <p id="fu-aplicou-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────
 const ALL = [
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"16/03 · Online",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"16/03 · Online",p:"Outros",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Outros",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"09/03 · SP",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"23/03 · RJ — Adriano",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Outros",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"23/03 · RS — Anderson",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"23/03 · SP — Beto",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Outros",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Terapeuta Capilar",nps:9,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Março",c:"30/03 · RJ — Michele Souza",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Outros",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Março",c:"30/03 · RS — Mariana Compagnoni",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Outros",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Março",c:"30/03 · SP — Ana Paula Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RJ",m:"Abril",c:"27/04 · RJ — Virginia Nascimento",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Abril",c:"27/04 · RJ — Virginia Nascimento",p:"Cabeleireiro",nps:8,ret:"Sim",int:"Sim",niv:""},
-  {e:"RJ",m:"Abril",c:"27/04 · RJ — Virginia Nascimento",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Dono de Salão e Cabeleireiro",nps:9,ret:"Não",int:"Prefiro não opinar",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"RS",m:"Abril",c:"27/04 · RS — Anderson Claro",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Abril",c:"27/04 · SP — Beto, Dani, Luiza e Paula",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:""},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:"Avançado"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Auxiliar",nps:9,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Avançado"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Avançado"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:"Intermediario"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:9,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Dono de Salão",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Outros",nps:10,ret:"Não",int:"Prefiro não opinar",niv:"Nenum conhecimento"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Dono de Salão e Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Formado"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Intermediario"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Auxiliar",nps:10,ret:"Sim",int:"Sim",niv:"Avançado"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Terapeuta Capilar",nps:10,ret:"Sim",int:"Sim",niv:"Formado"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"},
-  {e:"SP",m:"Maio",c:"11/05 · SP — Terapia Capilar c/ Ana Soares",p:"Terapeuta Capilar",nps:10,ret:"Não",int:"Sim",niv:"Formado"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Cabeleireiro",nps:10,ret:"Sim",int:"Sim",niv:"Iniciante"},
-  {e:"RJ",m:"Maio",c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",p:"Auxiliar",nps:10,ret:"Não",int:"Sim",niv:"Iniciante"}
+  // 09/03 SP
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Outros',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'09/03 · SP',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 16/03 Online
+  {e:'SP',m:'Março',c:'16/03 · Online',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'16/03 · Online',p:'Outros',nps:10,ret:'Sim',int:'Sim',niv:''},
+  // 23/03 RJ Adriano
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'23/03 · RJ — Adriano',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 23/03 RS Anderson
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Outros',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Auxiliar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'23/03 · RS — Anderson',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 23/03 SP Beto
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'23/03 · SP — Beto',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 30/03 RJ Michele
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Outros',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Auxiliar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Auxiliar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Terapeuta Capilar',nps:9,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RJ',m:'Março',c:'30/03 · RJ — Michele Souza',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 30/03 RS Mariana
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Outros',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Março',c:'30/03 · RS — Mariana Compagnoni',p:'Auxiliar',nps:10,ret:'Sim',int:'Sim',niv:''},
+  // 30/03 SP Ana Paula
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Outros',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Março',c:'30/03 · SP — Ana Paula Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 27/04 RJ Virginia
+  {e:'RJ',m:'Abril',c:'27/04 · RJ — Virginia Nascimento',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Abril',c:'27/04 · RJ — Virginia Nascimento',p:'Cabeleireiro',nps:8,ret:'Sim',int:'Sim',niv:''},
+  {e:'RJ',m:'Abril',c:'27/04 · RJ — Virginia Nascimento',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 27/04 RS Anderson Claro
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Dono de Salão e Cabeleireiro',nps:9,ret:'Não',int:'Prefiro não opinar',niv:''},
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'RS',m:'Abril',c:'27/04 · RS — Anderson Claro',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  // 27/04 SP Beto+
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  {e:'SP',m:'Abril',c:'27/04 · SP — Beto, Dani, Luiza e Paula',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
+  // 04/05 SP Encontro
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:'Avançado'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Auxiliar',nps:9,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Avançado'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Não',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'04/05 · SP — Encontro Toctus c/ Hellen Anício',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:'Avançado'},
+  // 11/05 SP Ana Soares
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Formado'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Auxiliar',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Auxiliar',nps:10,ret:'Sim',int:'Sim',niv:'Intermediario'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'SP',m:'Maio',c:'11/05 · SP — Terapia Capilar c/ Ana Soares',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  // 11/05 RJ Gheuri
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Dono de Salão e Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Cabeleireiro',nps:9,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Terapeuta Capilar',nps:10,ret:'Sim',int:'Sim',niv:'Formado'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Cabeleireiro',nps:10,ret:'Não',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Dono de Salão',nps:10,ret:'Sim',int:'Sim',niv:'Iniciante'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Outros',nps:10,ret:'Não',int:'Prefiro não opinar',niv:'Nenum conhecimento'},
+  {e:'RJ',m:'Maio',c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',p:'Cabeleireiro',nps:10,ret:'Sim',int:'Sim',niv:''},
 ];
 
 const CURSOS_ORDER = [
@@ -547,13 +633,19 @@ const CURSOS_COLORS = [
 ];
 
 const ENROLLMENT = [
-  {c:"27/04 · SP — Beto, Dani, Luiza e Paula",e:"SP",m:"Abril",lbl:"27/04 SP — Beto+",inscritos:29,presentes:16,faltaram:13},
-  {c:"27/04 · RJ — Virginia Nascimento",e:"RJ",m:"Abril",lbl:"27/04 RJ — Virginia",inscritos:24,presentes:12,faltaram:12},
-  {c:"27/04 · RS — Anderson Claro",e:"RS",m:"Abril",lbl:"27/04 RS — Anderson",inscritos:17,presentes:8,faltaram:9},
-  {c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",e:"SP",m:"Maio",lbl:"04/05 SP — Encontro",inscritos:29,presentes:17,faltaram:12},
-  {c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",e:"RJ",m:"Maio",lbl:"11/05 RJ — Gheuri",inscritos:37,presentes:27,faltaram:10},
-  {c:"11/05 · SP — Terapia Capilar c/ Ana Soares",e:"SP",m:"Maio",lbl:"11/05 SP — Protocol&Profit",inscritos:41,presentes:25,faltaram:16},
-  {c:"18/05 · RS — Terapia Capilar",e:"RS",m:"Maio",lbl:"18/05 RS — Terapia Capilar",inscritos:0,presentes:0,faltaram:0}
+  {c:'27/04 · RJ — Virginia Nascimento',             e:'RJ', m:'Abril', lbl:'27/04 RJ — Virginia',  inscritos:24, presentes:12, faltaram:12},
+  {c:'27/04 · RS — Anderson Claro',                   e:'RS', m:'Abril', lbl:'27/04 RS — Anderson',  inscritos:17, presentes:8,  faltaram:9},
+  {c:'27/04 · SP — Beto, Dani, Luiza e Paula',        e:'SP', m:'Abril', lbl:'27/04 SP — Beto+',     inscritos:30, presentes:16, faltaram:14},
+  {c:'04/05 · SP — Encontro Toctus c/ Hellen Anício', e:'SP', m:'Maio',  lbl:'04/05 SP — Encontro',  inscritos:29, presentes:17, faltaram:12},
+  {c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',      e:'RJ', m:'Maio',  lbl:'11/05 RJ — Gheuri',    inscritos:37, presentes:27, faltaram:10},
+  {c:'11/05 · SP — Terapia Capilar c/ Ana Soares',           e:'SP', m:'Maio',  lbl:'11/05 SP — Protocol&Profit', inscritos:43, presentes:25, faltaram:18},
+];
+
+// ─────────────────────────────────────────────
+// PÓS-CURSO — pesquisa com quem não foi e quem foi
+// p: false = não compareceu | true = compareceu
+// ─────────────────────────────────────────────
+const FOLLOWUP = [
 ];
 
 // ─────────────────────────────────────────────
@@ -774,6 +866,9 @@ function updateAll(){
   C.presenca.data.datasets[2].data=fe.map(r=>r.faltaram);
   C.presenca.update();
 
+  // Pós-Curso
+  updateFollowup();
+
   // Quotes
   ['sugestoes','destaques','equipe'].forEach(tab=>{
     const panel=document.getElementById('tab-'+tab);
@@ -789,6 +884,122 @@ function updateAll(){
     const noEl=document.getElementById('no-'+tab);
     if(noEl) noEl.style.display=visible===0?'block':'none';
   });
+}
+
+// ─────────────────────────────────────────────
+// PÓS-CURSO
+// ─────────────────────────────────────────────
+const KEYWORDS_DOR = ['marketing','financeiro','precificação','precificacao','gestão','gestao','equipe','corte','mechas','colorimetria','constância','constancia','cliente','produto','técnica','tecnica','terapia capilar','vendas','atendimento'];
+const KEYWORDS_EVOL = ['marketing','financeiro','precificação','precificacao','gestão','gestao','terapia capilar','mechas','corte','colorimetria','vendas','equipe','técnica','tecnica'];
+
+function normTxt(t){return t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+
+function countKeywords(texts, keys){
+  const cnt={};
+  texts.forEach(t=>{
+    const tn=normTxt(t);
+    keys.forEach(k=>{ if(tn.includes(normTxt(k))) cnt[k]=(cnt[k]||0)+1; });
+  });
+  return Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+}
+
+function renderFuTags(elId, texts, color, keys){
+  const el=document.getElementById(elId);
+  el.innerHTML='';
+  const pairs=countKeywords(texts,keys);
+  if(!pairs.length){
+    // show full texts as small tags
+    texts.slice(0,12).forEach(t=>{
+      const span=document.createElement('span');
+      span.className='fu-tag';
+      span.style.cssText=`background:${color}18;color:${color};`;
+      span.textContent=t.length>50?t.substring(0,48)+'…':t;
+      el.appendChild(span);
+    });
+    return;
+  }
+  pairs.forEach(([kw,cnt])=>{
+    const span=document.createElement('span');
+    span.className='fu-tag';
+    span.style.cssText=`background:${color}18;color:${color};`;
+    const badge=document.createElement('span');
+    badge.className='fu-tag-count';
+    badge.style.cssText=`background:${color}35;`;
+    badge.textContent=cnt;
+    span.textContent=kw.charAt(0).toUpperCase()+kw.slice(1)+' ';
+    span.appendChild(badge);
+    el.appendChild(span);
+  });
+}
+
+function renderFuQuote(txt, cor, meta){
+  const d=document.createElement('div');
+  d.className='fu-quote';
+  d.style.cssText=`background:${cor}10;border-left-color:${cor};color:var(--text);`;
+  d.innerHTML=`"${txt}"${meta?`<div class="fu-quote-meta">${meta}</div>`:''}`;
+  return d;
+}
+
+function updateFollowup(){
+  const nao=FOLLOWUP.filter(r=>!r.p&&(r.motivo||r.ret||r.dor||r.evoluir));
+  const foi=FOLLOWUP.filter(r=>r.p&&(r.dor||r.evoluir||r.aplicou));
+
+  // KPIs
+  const retSim=nao.filter(r=>normTxt(r.ret||'').startsWith('s'));
+  const aplicList=foi.filter(r=>r.aplicou&&!normTxt(r.aplicou).startsWith('n'));
+  document.getElementById('fu-nao-resp').textContent=nao.length||'—';
+  document.getElementById('fu-retorno').textContent=nao.length?Math.round(retSim.length/nao.length*100)+'%':'—';
+  document.getElementById('fu-comp-resp').textContent=foi.length||'—';
+  document.getElementById('fu-aplicou-pct').textContent=foi.length?aplicList.length+'/'+foi.length:'—';
+
+  // Motivos
+  const motivosEl=document.getElementById('fu-motivos');
+  motivosEl.innerHTML='';
+  const motivos=nao.filter(r=>r.motivo);
+  document.getElementById('fu-motivos-empty').style.display=motivos.length?'none':'block';
+  motivos.forEach(r=>motivosEl.appendChild(renderFuQuote(r.motivo,'#e73a57',r.e)));
+
+  // Interesse em retornar — barra visual
+  const retVis=document.getElementById('fu-retorno-vis');
+  if(nao.length){
+    const pct=Math.round(retSim.length/nao.length*100);
+    retVis.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="flex:1;background:var(--border);border-radius:4px;height:12px;overflow:hidden"><div style="width:${pct}%;height:100%;background:#6af7c8;border-radius:4px"></div></div><span style="font-size:.85rem;font-weight:700;color:#6af7c8">${pct}%</span></div><span style="font-size:.72rem;color:var(--muted)">${retSim.length} de ${nao.length} respondentes querem participar novamente</span>`;
+  }
+  // Frases de interesse
+  const retTagsEl=document.getElementById('fu-retorno-tags');
+  retTagsEl.innerHTML='';
+  document.getElementById('fu-retorno-empty').style.display=nao.filter(r=>r.ret).length?'none':'block';
+  nao.filter(r=>r.ret).forEach(r=>{
+    const span=document.createElement('span');
+    span.className='fu-tag';
+    const retNorm=normTxt(r.ret||'');
+    const col=retNorm.startsWith('s')?'#6af7c8':'#e73a57';
+    span.style.cssText=`background:${col}18;color:${col};`;
+    span.textContent=r.ret.length>40?r.ret.substring(0,38)+'…':r.ret;
+    retTagsEl.appendChild(span);
+  });
+
+  // Dores do salão
+  const allDores=[...nao.map(r=>r.dor),...foi.map(r=>r.dor)].filter(Boolean);
+  document.getElementById('fu-dores-empty').style.display=allDores.length?'none':'block';
+  renderFuTags('fu-dores', allDores, '#7c6af7', KEYWORDS_DOR);
+  const doresQuotes=document.getElementById('fu-dores-quotes');
+  doresQuotes.innerHTML='';
+  allDores.filter(t=>t.length>30).slice(0,4).forEach(t=>doresQuotes.appendChild(renderFuQuote(t,'#7c6af7','')));
+
+  // Interesse em evoluir
+  const allEvol=[...nao.map(r=>r.evoluir),...foi.map(r=>r.evoluir)].filter(Boolean);
+  document.getElementById('fu-evoluir-empty').style.display=allEvol.length?'none':'block';
+  renderFuTags('fu-evoluir', allEvol, '#f7c26a', KEYWORDS_EVOL);
+  const evolQuotes=document.getElementById('fu-evoluir-quotes');
+  evolQuotes.innerHTML='';
+  allEvol.filter(t=>t.length>30).slice(0,4).forEach(t=>evolQuotes.appendChild(renderFuQuote(t,'#f7c26a','')));
+
+  // Conseguiu aplicar
+  const aplicEl=document.getElementById('fu-aplicou-list');
+  aplicEl.innerHTML='';
+  document.getElementById('fu-aplicou-empty').style.display=foi.filter(r=>r.aplicou).length?'none':'block';
+  foi.filter(r=>r.aplicou).forEach(r=>aplicEl.appendChild(renderFuQuote(r.aplicou,'#6af7c8',r.e)));
 }
 
 // Tab switching
