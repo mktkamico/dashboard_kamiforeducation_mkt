@@ -115,6 +115,13 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 #enroll-strip .kpi.green::before{background:#0e8a5f;}
 #enroll-strip .kpi.pink .kpi-value{color:#0e8a5f;}
 #enroll-strip .kpi.pink::before{background:#0e8a5f;}
+/* ── Page Tabs ── */
+.page-tabs{display:flex;gap:6px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:20px;}
+.page-tab-btn{background:transparent;color:var(--muted);border:1px solid transparent;border-radius:8px;padding:8px 16px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.page-tab-btn:hover{background:var(--border);color:var(--text);}
+.page-tab-btn.active{background:#e73a57;color:#f0eee8;border-color:#e73a57;}
+.page-panel{display:none;}
+.page-panel.active{display:block;}
 @media(max-width:600px){body{padding:14px;}.kpi-strip{grid-template-columns:1fr 1fr;}}
 
 /* ── Pós-Curso ── */
@@ -202,13 +209,18 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
   <span id="filter-info"><strong id="fi-count">165</strong> respostas selecionadas</span>
 </div>
 
-<!-- Enrollment KPIs -->
-<div class="kpi-strip" id="enroll-strip" style="margin-bottom:20px">
-  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">180</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
-  <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">105</div><div class="kpi-sub" id="kpi-presentes-sub">de 180 inscritos</div></div>
-  <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">58%</div><div class="kpi-sub">do total inscrito</div></div>
-  <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">75</div><div class="kpi-sub" id="kpi-faltaram-sub">de 180 inscritos</div></div>
+<!-- Page Tabs Navigation -->
+<div class="page-tabs">
+  <button class="page-tab-btn active" data-page="geral">📊 Geral</button>
+  <button class="page-tab-btn" data-page="inscritos">📋 Inscritos</button>
+  <button class="page-tab-btn" data-page="satisfacao">⭐ Satisfação</button>
+  <button class="page-tab-btn" data-page="perfil">👤 Perfil</button>
+  <button class="page-tab-btn" data-page="pos-curso">📝 Pós Curso</button>
+  <button class="page-tab-btn" data-page="dores">💡 Dores &amp; Necessidades</button>
 </div>
+
+<!-- ── TAB: GERAL ── -->
+<div class="page-panel active" id="page-geral">
 
 <!-- KPIs -->
 <div class="kpi-strip">
@@ -219,38 +231,52 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
   <div class="kpi blue"><div class="kpi-label">Estados Atendidos</div><div class="kpi-value" id="kpi-estados">3</div><div class="kpi-sub">SP · RJ · RS</div></div>
 </div>
 
-<!-- Row 1 -->
-<div class="grid grid-2">
-  <div class="card">
-    <h2>Indicação do Curso (NPS)</h2>
-    <div class="nps-block">
-      <div class="nps-circle" id="nps-circle">
-        <div class="nps-inner"><div class="nps-score" id="nps-score">9.95</div><div class="nps-label">NPS</div></div>
-      </div>
-      <div class="nps-dist">
-        <div class="nps-bar-row"><span class="score-lbl">10</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-10" style="width:93%;background:#6af7c8"></div></div><span class="nps-bar-count" id="nps-count-10">153</span></div>
-        <div class="nps-bar-row"><span class="score-lbl">9</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-9" style="width:6%;background:var(--accent4)"></div></div><span class="nps-bar-count" id="nps-count-9">11</span></div>
-        <div class="nps-bar-row"><span class="score-lbl">8</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-8" style="width:1%;background:#e73a57"></div></div><span class="nps-bar-count" id="nps-count-8">1</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <h2>Perfil Profissional</h2>
-    <div class="chart-wrap med"><canvas id="chartPerfil"></canvas></div>
-  </div>
-</div>
-
-<!-- Row 2 -->
-<div class="grid grid-3">
-  <div class="card"><h2>Participantes por Estado</h2><div class="chart-wrap med"><canvas id="chartEstado"></canvas></div></div>
-  <div class="card"><h2>Já Participou de Cursos Antes?</h2><div class="chart-wrap med"><canvas id="chartRetorno"></canvas></div></div>
-  <div class="card"><h2>Interesse em Novos Eventos?</h2><div class="chart-wrap med"><canvas id="chartInteresse"></canvas></div></div>
-</div>
-
-<!-- Row 3 -->
+<!-- Participações por Evento -->
 <div class="card" style="margin-bottom:20px">
   <h2>Participações por Evento</h2>
   <div class="chart-wrap tall"><canvas id="chartEventos"></canvas></div>
+</div>
+
+<!-- Respostas por Mês + Detalhe por Evento -->
+<div class="grid grid-2" style="margin-bottom:20px">
+  <div class="card"><h2>Respostas por Mês</h2><div class="chart-wrap med"><canvas id="chartMes"></canvas></div></div>
+  <div class="card">
+    <h2>Detalhe por Evento</h2>
+    <div class="scroll-x">
+      <table class="evt-table">
+        <thead><tr><th>Data</th><th>Evento / Educador</th><th>Estado</th><th>Respostas</th><th>NPS Médio</th></tr></thead>
+        <tbody id="evt-tbody">
+          <tr data-estado="SP" data-mes="Março" data-curso="09/03 · SP"><td>09/03</td><td>São Paulo</td><td><span class="pill pill-sp">SP</span></td><td>8</td><td>10,0</td></tr>
+          <tr data-estado="SP" data-mes="Março" data-curso="16/03 · Online"><td>16/03</td><td>Online</td><td><span class="pill pill-on">Online</span></td><td>2</td><td>10,0</td></tr>
+          <tr data-estado="RJ" data-mes="Março" data-curso="23/03 · RJ — Adriano"><td>23/03</td><td>Rio de Janeiro — Adriano</td><td><span class="pill pill-rj">RJ</span></td><td>17</td><td>10,0</td></tr>
+          <tr data-estado="RS" data-mes="Março" data-curso="23/03 · RS — Anderson"><td>23/03</td><td>Rio Grande do Sul — Anderson</td><td><span class="pill pill-rs">RS</span></td><td>12</td><td>10,0</td></tr>
+          <tr data-estado="SP" data-mes="Março" data-curso="23/03 · SP — Beto"><td>23/03</td><td>São Paulo — Beto</td><td><span class="pill pill-sp">SP</span></td><td>16</td><td>10,0</td></tr>
+          <tr data-estado="RJ" data-mes="Março" data-curso="30/03 · RJ — Michele Souza"><td>30/03</td><td>Rio de Janeiro — Michele Souza</td><td><span class="pill pill-rj">RJ</span></td><td>19</td><td>9,9</td></tr>
+          <tr data-estado="RS" data-mes="Março" data-curso="30/03 · RS — Mariana Compagnoni"><td>30/03</td><td>Rio Grande do Sul — Mariana Compagnoni</td><td><span class="pill pill-rs">RS</span></td><td>6</td><td>10,0</td></tr>
+          <tr data-estado="SP" data-mes="Março" data-curso="30/03 · SP — Ana Paula Soares"><td>30/03</td><td>São Paulo — Ana Paula Soares</td><td><span class="pill pill-sp">SP</span></td><td>17</td><td>10,0</td></tr>
+          <tr data-estado="RJ" data-mes="Abril" data-curso="27/04 · RJ — Virginia Nascimento"><td>27/04</td><td>Rio de Janeiro — Virginia Nascimento</td><td><span class="pill pill-rj">RJ</span></td><td>3</td><td>9,3</td></tr>
+          <tr data-estado="RS" data-mes="Abril" data-curso="27/04 · RS — Anderson Claro"><td>27/04</td><td>Rio Grande do Sul — Anderson Claro</td><td><span class="pill pill-rs">RS</span></td><td>6</td><td>9,8</td></tr>
+          <tr data-estado="SP" data-mes="Abril" data-curso="27/04 · SP — Beto, Dani, Luiza e Paula"><td>27/04</td><td>São Paulo — Beto, Dani, Luiza e Paula</td><td><span class="pill pill-sp">SP</span></td><td>17</td><td>10,0</td></tr>
+          <tr data-estado="SP" data-mes="Maio" data-curso="04/05 · SP — Encontro Toctus c/ Hellen Anício"><td>04/05</td><td>São Paulo — Encontro Toctus c/ Hellen Anício</td><td><span class="pill pill-sp">SP</span></td><td>15</td><td>9,9</td></tr>
+          <tr data-estado="SP" data-mes="Maio" data-curso="11/05 · SP — Terapia Capilar c/ Ana Soares"><td>11/05</td><td>São Paulo — Terapia Capilar c/ Ana Soares</td><td><span class="pill pill-sp">SP</span></td><td>18</td><td>10,0</td></tr>
+          <tr data-estado="RJ" data-mes="Maio" data-curso="11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi"><td>11/05</td><td>Rio de Janeiro — Terapia Capilar c/ Gheuri Zangelmi</td><td><span class="pill pill-rj">RJ</span></td><td>9</td><td>9,9</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-geral -->
+
+<!-- ── TAB: INSCRITOS ── -->
+<div class="page-panel" id="page-inscritos">
+
+<!-- Enrollment KPIs -->
+<div class="kpi-strip" id="enroll-strip" style="margin-bottom:20px">
+  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">180</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
+  <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">105</div><div class="kpi-sub" id="kpi-presentes-sub">de 180 inscritos</div></div>
+  <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">58%</div><div class="kpi-sub">do total inscrito</div></div>
+  <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">75</div><div class="kpi-sub" id="kpi-faltaram-sub">de 180 inscritos</div></div>
 </div>
 
 <!-- Inscritos × Presença -->
@@ -260,35 +286,31 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
   <p style="font-size:.72rem;color:var(--muted);margin-top:14px;text-align:center">* Dados de presença disponíveis para: 27/04 RJ (Virginia Nascimento), 27/04 RS (Anderson Claro), 27/04 SP (Beto, Dani, Luiza e Paula) e 04/05 SP (Encontro Toctus c/ Hellen Anício)</p>
 </div>
 
-<!-- Row 4 -->
-<div class="grid grid-2">
-  <div class="card"><h2>Nível com Terapia Capilar <span style="font-size:.7rem;color:var(--accent4)">(eventos mai/2026)</span></h2><div class="chart-wrap med"><canvas id="chartNivel"></canvas></div></div>
-  <div class="card"><h2>Respostas por Mês</h2><div class="chart-wrap med"><canvas id="chartMes"></canvas></div></div>
+</div><!-- /page-inscritos -->
+
+<!-- ── TAB: SATISFAÇÃO ── -->
+<div class="page-panel" id="page-satisfacao">
+
+<!-- KPIs satisfação -->
+<div class="kpi-strip" style="margin-bottom:20px">
+  <div class="kpi purple"><div class="kpi-label">Total de Respostas</div><div class="kpi-value" id="kpi-sat-total">165</div><div class="kpi-sub">participantes avaliaram</div></div>
+  <div class="kpi green"><div class="kpi-label">NPS Médio</div><div class="kpi-value" id="kpi-sat-nps">9.95</div><div class="kpi-sub">Escala 0–10</div></div>
+  <div class="kpi pink"><div class="kpi-label">Interesse em Novos Eventos</div><div class="kpi-value" id="kpi-sat-interesse">97%</div><div class="kpi-sub"></div></div>
+  <div class="kpi yellow"><div class="kpi-label">Já Participou Antes</div><div class="kpi-value" id="kpi-sat-retorno">—</div><div class="kpi-sub"></div></div>
 </div>
 
-<!-- Events table -->
+<!-- NPS card -->
 <div class="card" style="margin-bottom:20px">
-  <h2>Detalhe por Evento</h2>
-  <div class="scroll-x">
-    <table class="evt-table">
-      <thead><tr><th>Data</th><th>Evento / Educador</th><th>Estado</th><th>Respostas</th><th>NPS Médio</th></tr></thead>
-      <tbody id="evt-tbody">
-        <tr data-estado="SP" data-mes="Março" data-curso="09/03 · SP"><td>09/03</td><td>São Paulo</td><td><span class="pill pill-sp">SP</span></td><td>8</td><td>10,0</td></tr>
-        <tr data-estado="SP" data-mes="Março" data-curso="16/03 · Online"><td>16/03</td><td>Online</td><td><span class="pill pill-on">Online</span></td><td>2</td><td>10,0</td></tr>
-        <tr data-estado="RJ" data-mes="Março" data-curso="23/03 · RJ — Adriano"><td>23/03</td><td>Rio de Janeiro — Adriano</td><td><span class="pill pill-rj">RJ</span></td><td>17</td><td>10,0</td></tr>
-        <tr data-estado="RS" data-mes="Março" data-curso="23/03 · RS — Anderson"><td>23/03</td><td>Rio Grande do Sul — Anderson</td><td><span class="pill pill-rs">RS</span></td><td>12</td><td>10,0</td></tr>
-        <tr data-estado="SP" data-mes="Março" data-curso="23/03 · SP — Beto"><td>23/03</td><td>São Paulo — Beto</td><td><span class="pill pill-sp">SP</span></td><td>16</td><td>10,0</td></tr>
-        <tr data-estado="RJ" data-mes="Março" data-curso="30/03 · RJ — Michele Souza"><td>30/03</td><td>Rio de Janeiro — Michele Souza</td><td><span class="pill pill-rj">RJ</span></td><td>19</td><td>9,9</td></tr>
-        <tr data-estado="RS" data-mes="Março" data-curso="30/03 · RS — Mariana Compagnoni"><td>30/03</td><td>Rio Grande do Sul — Mariana Compagnoni</td><td><span class="pill pill-rs">RS</span></td><td>6</td><td>10,0</td></tr>
-        <tr data-estado="SP" data-mes="Março" data-curso="30/03 · SP — Ana Paula Soares"><td>30/03</td><td>São Paulo — Ana Paula Soares</td><td><span class="pill pill-sp">SP</span></td><td>17</td><td>10,0</td></tr>
-        <tr data-estado="RJ" data-mes="Abril" data-curso="27/04 · RJ — Virginia Nascimento"><td>27/04</td><td>Rio de Janeiro — Virginia Nascimento</td><td><span class="pill pill-rj">RJ</span></td><td>3</td><td>9,3</td></tr>
-        <tr data-estado="RS" data-mes="Abril" data-curso="27/04 · RS — Anderson Claro"><td>27/04</td><td>Rio Grande do Sul — Anderson Claro</td><td><span class="pill pill-rs">RS</span></td><td>6</td><td>9,8</td></tr>
-        <tr data-estado="SP" data-mes="Abril" data-curso="27/04 · SP — Beto, Dani, Luiza e Paula"><td>27/04</td><td>São Paulo — Beto, Dani, Luiza e Paula</td><td><span class="pill pill-sp">SP</span></td><td>17</td><td>10,0</td></tr>
-        <tr data-estado="SP" data-mes="Maio" data-curso="04/05 · SP — Encontro Toctus c/ Hellen Anício"><td>04/05</td><td>São Paulo — Encontro Toctus c/ Hellen Anício</td><td><span class="pill pill-sp">SP</span></td><td>15</td><td>9,9</td></tr>
-        <tr data-estado="SP" data-mes="Maio" data-curso="11/05 · SP — Terapia Capilar c/ Ana Soares"><td>11/05</td><td>São Paulo — Terapia Capilar c/ Ana Soares</td><td><span class="pill pill-sp">SP</span></td><td>18</td><td>10,0</td></tr>
-        <tr data-estado="RJ" data-mes="Maio" data-curso="11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi"><td>11/05</td><td>Rio de Janeiro — Terapia Capilar c/ Gheuri Zangelmi</td><td><span class="pill pill-rj">RJ</span></td><td>9</td><td>9,9</td></tr>
-      </tbody>
-    </table>
+  <h2>Indicação do Curso (NPS)</h2>
+  <div class="nps-block">
+    <div class="nps-circle" id="nps-circle">
+      <div class="nps-inner"><div class="nps-score" id="nps-score">9.95</div><div class="nps-label">NPS</div></div>
+    </div>
+    <div class="nps-dist">
+      <div class="nps-bar-row"><span class="score-lbl">10</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-10" style="width:93%;background:#6af7c8"></div></div><span class="nps-bar-count" id="nps-count-10">153</span></div>
+      <div class="nps-bar-row"><span class="score-lbl">9</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-9" style="width:6%;background:var(--accent4)"></div></div><span class="nps-bar-count" id="nps-count-9">11</span></div>
+      <div class="nps-bar-row"><span class="score-lbl">8</span><div class="nps-bar-bg"><div class="nps-bar-fill" id="nps-bar-8" style="width:1%;background:#e73a57"></div></div><span class="nps-bar-count" id="nps-count-8">1</span></div>
+    </div>
   </div>
 </div>
 
@@ -359,7 +381,29 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
   </div>
 </div>
 
-<!-- ─── PESQUISA PÓS-CURSO ─── -->
+</div><!-- /page-satisfacao -->
+
+<!-- ── TAB: PERFIL ── -->
+<div class="page-panel" id="page-perfil">
+
+<div class="grid grid-2">
+  <div class="card"><h2>Perfil Profissional</h2><div class="chart-wrap med"><canvas id="chartPerfil"></canvas></div></div>
+  <div class="card"><h2>Participantes por Estado</h2><div class="chart-wrap med"><canvas id="chartEstado"></canvas></div></div>
+</div>
+<div class="grid grid-2" style="margin-bottom:20px">
+  <div class="card"><h2>Já Participou de Cursos Antes?</h2><div class="chart-wrap med"><canvas id="chartRetorno"></canvas></div></div>
+  <div class="card"><h2>Interesse em Novos Eventos?</h2><div class="chart-wrap med"><canvas id="chartInteresse"></canvas></div></div>
+</div>
+<div class="card" style="margin-bottom:20px">
+  <h2>Nível com Terapia Capilar <span style="font-size:.7rem;color:var(--accent4)">(eventos mai/2026)</span></h2>
+  <div class="chart-wrap med"><canvas id="chartNivel"></canvas></div>
+</div>
+
+</div><!-- /page-perfil -->
+
+<!-- ── TAB: PÓS CURSO ── -->
+<div class="page-panel" id="page-pos-curso">
+
 <div class="fu-section">
   <h2>Pesquisa Pós-Curso — Quem Não Foi &amp; Quem Foi</h2>
 
@@ -400,6 +444,24 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
       <p id="fu-retorno-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
     </div>
 
+    <!-- Conseguiu aplicar -->
+    <div class="fu-card" style="grid-column:1/-1">
+      <div class="fu-card-title">O que conseguiu aplicar (quem foi ao curso)</div>
+      <div id="fu-aplicou-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px"></div>
+      <p id="fu-aplicou-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-pos-curso -->
+
+<!-- ── TAB: DORES & NECESSIDADES ── -->
+<div class="page-panel" id="page-dores">
+
+<div class="fu-section">
+  <h2>Mapeamento de Dores &amp; Necessidades</h2>
+
+  <div class="fu-grid">
     <!-- Dores do salão -->
     <div class="fu-card">
       <div class="fu-card-title">Principais dores do salão</div>
@@ -415,15 +477,10 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
       <div id="fu-evoluir-quotes" style="margin-top:10px"></div>
       <p id="fu-evoluir-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
     </div>
-
-    <!-- Conseguiu aplicar -->
-    <div class="fu-card" style="grid-column:1/-1">
-      <div class="fu-card-title">O que conseguiu aplicar (quem foi ao curso)</div>
-      <div id="fu-aplicou-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px"></div>
-      <p id="fu-aplicou-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
-    </div>
   </div>
 </div>
+
+</div><!-- /page-dores -->
 
 <script>
 // ─────────────────────────────────────────────
@@ -646,7 +703,7 @@ const FOLLOWUP = [
   {e:"RJ",p:false,motivo:"",ret:"",dor:"Cortes, eu sinto que preciso me atualizar e colorimetria",evoluir:"Financeiro e marketing",aplicou:""},
   {e:"SP",p:false,motivo:"",ret:"",dor:"Marketing/Ser constante nas redes",evoluir:"",aplicou:""},
   {e:"SP",p:false,motivo:"Distância",ret:"sim",dor:"Talvez os iluminados nao pesar na quantidade de  mechas",evoluir:"Gestao e um ponto bom  e precificação",aplicou:""},
-  {e:"RJ",p:true,motivo:"",ret:"",dor:"Preço de produtos. As outras marcas estão muitos caras e não tem como a gente repassar para todas as clientes. Algumas vão entender e outras vão preferir procurar o mais em conta",evoluir:"",aplicou:"Nada. Não achei o curso explicativo. Eu fui para conhecer a coloração e sai sem saber como ela é. A profissional falou sobre tecnica e não sobre o produto. E se vcs estão apresentando o produto, pelo menos eu penso que tem que falar da consistência, do cheiro, de quanto ele rende, como fica a coloração ao final."},
+  {e:"RJ",p:true,motivo:"",ret:"",dor:"Eu gostaria de conhecer a coloração, saber sobre as super clareadoras e sobre cobertura de brancos",evoluir:"Marketing",aplicou:"Nada. Não achei o curso explicativo. Eu fui para conhecer a coloração e sai sem saber como ela é. A profissional falou sobre tecnica e não sobre o produto. E se vcs estão apresentando o produto, pelo menos eu penso que tem que falar da consistência, do cheiro, de quanto ele rende, como fica a coloração ao final."},
   {e:"RJ",p:true,motivo:"",ret:"",dor:"",evoluir:"",aplicou:"o curso foi maravilhoso , didática maravilhosa , adiquiri bastante conhecimento e técnicas inovadoras, ,ainda não consegui realizar o que foi passado , mas em breve estarei realizando … obrigada"},
   {e:"RJ",p:false,motivo:"número errado",ret:"",dor:"",evoluir:"",aplicou:""},
   {e:"RJ",p:false,motivo:"Sofreu um acidente de carro e ficou sem locomoção",ret:"Sim, quero muito participar do próximo",dor:"Marketing",evoluir:"Marketing",aplicou:""},
@@ -821,6 +878,11 @@ function updateAll(){
   const simR=d.filter(r=>r.ret==='Sim').length;
   document.getElementById('kpi-retorno').textContent=n?Math.round(simR/n*100)+'%':'—';
   document.getElementById('kpi-retorno-sub').textContent=n?`${simR} participantes recorrentes`:'';
+  // Satisfaction tab KPI mirrors
+  document.getElementById('kpi-sat-total').textContent=n;
+  document.getElementById('kpi-sat-nps').textContent=avgNPS.toFixed(2);
+  document.getElementById('kpi-sat-interesse').textContent=n?Math.round(simI/n*100)+'%':'—';
+  document.getElementById('kpi-sat-retorno').textContent=n?Math.round(simR/n*100)+'%':'—';
   const estados=new Set(d.map(r=>r.e));
   document.getElementById('kpi-estados').textContent=estados.size||'—';
 
@@ -1022,6 +1084,26 @@ function updateFollowup(){
   document.getElementById('fu-aplicou-empty').style.display=foi.filter(r=>r.aplicou).length?'none':'block';
   foi.filter(r=>r.aplicou).forEach(r=>aplicEl.appendChild(renderFuQuote(r.aplicou,'#6af7c8',r.e)));
 }
+
+// ── PAGE TABS ────────────────────────────────
+function switchPageTab(tabId) {
+  document.querySelectorAll('.page-tab-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.page === tabId)
+  );
+  document.querySelectorAll('.page-panel').forEach(p =>
+    p.classList.toggle('active', p.id === 'page-' + tabId)
+  );
+  // Re-renderiza charts no painel ativo
+  setTimeout(() => {
+    Object.values(C).forEach(chart => {
+      try { chart.resize(); } catch(e) {}
+    });
+  }, 50);
+}
+
+document.querySelectorAll('.page-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchPageTab(btn.dataset.page));
+});
 
 // Tab switching
 document.querySelectorAll('.tab-btn').forEach(btn=>{
