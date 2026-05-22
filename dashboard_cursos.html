@@ -797,35 +797,6 @@ async function loadEnrollmentData(){
   });
 }
 
-// ── Charts pós-curso & dores (inicializados vazios, atualizados em updateFollowup)
-const hBarOpts=()=>({
-  indexAxis:'y',responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} menções`}}},
-  scales:{
-    x:{ticks:{color:'#c4b8b9',stepSize:1},grid:{color:'#3a3334'},beginAtZero:true,border:{display:false}},
-    y:{ticks:{color:'#c4b8b9',font:{size:11}},grid:{display:false},border:{display:false}}
-  }
-});
-C.motivos=new Chart(document.getElementById('chartMotivos').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#f76a8c',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
-C.retornoFu=new Chart(document.getElementById('chartRetornoFu').getContext('2d'),{
-  type:'doughnut',
-  data:{labels:['Querem retornar','Não querem'],datasets:[{data:[0,0],backgroundColor:['#6af7c8','#f76a8c'],borderWidth:0,hoverOffset:6}]},
-  options:{...donutOpts('bottom'),responsive:true,maintainAspectRatio:false}
-});
-C.doresBar=new Chart(document.getElementById('chartDoresBar').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#7c6af7',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
-C.evolBar=new Chart(document.getElementById('chartEvolBar').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#f7c26a',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
 
 // ─────────────────────────────────────────────
 // FILTER STATE
@@ -914,6 +885,36 @@ function mkChart(id,type,labels,data,colors,opts){
 }
 
 const donutOpts=(pos)=>({cutout:'62%',plugins:{legend:{position:pos,labels:{color:'#c4b8b9',font:{size:11},boxWidth:10,padding:10}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} (${ctx.chart.data.datasets[0].data.reduce((a,b)=>a+b,0)?Math.round(ctx.raw/ctx.chart.data.datasets[0].data.reduce((a,b)=>a+b,0)*100):0}%)`}}}});
+
+// ── Charts pós-curso & dores (inicializados vazios, atualizados em updateFollowup)
+const hBarOpts=()=>({
+  indexAxis:'y',responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} menções`}}},
+  scales:{
+    x:{ticks:{color:'#c4b8b9',stepSize:1},grid:{color:'#3a3334'},beginAtZero:true,border:{display:false}},
+    y:{ticks:{color:'#c4b8b9',font:{size:11}},grid:{display:false},border:{display:false}}
+  }
+});
+C.motivos=new Chart(document.getElementById('chartMotivos').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#f76a8c',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
+C.retornoFu=new Chart(document.getElementById('chartRetornoFu').getContext('2d'),{
+  type:'doughnut',
+  data:{labels:['Querem retornar','Não querem'],datasets:[{data:[0,0],backgroundColor:['#6af7c8','#f76a8c'],borderWidth:0,hoverOffset:6}]},
+  options:{...donutOpts('bottom'),responsive:true,maintainAspectRatio:false}
+});
+C.doresBar=new Chart(document.getElementById('chartDoresBar').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#7c6af7',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
+C.evolBar=new Chart(document.getElementById('chartEvolBar').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#f7c26a',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
 
 C.perfil=mkChart('chartPerfil','doughnut',
   ['Cabeleireiro','Dono Salão + Cab.','Dono de Salão','Terapeuta Capilar','Auxiliar','Outros'],
