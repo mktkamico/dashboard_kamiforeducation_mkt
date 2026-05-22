@@ -624,69 +624,65 @@ let ENROLLMENT = [
 ];
 
 // ─────────────────────────────────────────────
-// PÓS-CURSO — carregado dinamicamente da planilha
+// PÓS-CURSO — carregado dinamicamente, aba por evento
 // p: false = não compareceu | true = compareceu
 // ─────────────────────────────────────────────
 let FOLLOWUP = [];
 
 const FOLLOWUP_SHEET_ID = '1MXnrf3xs2PVmvQ0xbxWhHKnNS2k2kt1oJuVSHOtljkM';
 
-async function loadFollowupData(){
+// Uma entrada por aba da planilha. "sheet:''" = aba padrão (sem parâmetro de nome).
+// e_default: estado usado quando a coluna Estado estiver vazia na linha.
+// Adicione novos eventos abaixo conforme forem criados na planilha:
+const FOLLOWUP_EVENTS = [
+  {sheet:'',                                           e_default:'',   m:'Maio'},   // aba padrão — 11/05 RJ+SP+RS
+  {sheet:'Inscritos - Balens Art of Colors - 27/04',   e_default:'RJ', m:'Abril'},
+  {sheet:'Inscritos - Encontro Toctus - 04/05 (SP)',   e_default:'SP', m:'Maio'},
+  // {sheet:'NOME EXATO DA ABA', e_default:'SP', m:'Mês'},
+];
+
+async function fetchOneFollowupSheet(ev){
   try {
-    const url=`https://docs.google.com/spreadsheets/d/${FOLLOWUP_SHEET_ID}/gviz/tq?tqx=out:csv`;
+    const base=`https://docs.google.com/spreadsheets/d/${FOLLOWUP_SHEET_ID}/gviz/tq?tqx=out:csv`;
+    const url=ev.sheet ? base+'&sheet='+encodeURIComponent(ev.sheet) : base;
     const res=await fetch(url);
-    if(!res.ok){ console.warn('[Followup] HTTP',res.status); return; }
-    const raw=(await res.text()).replace(/^﻿/,'').replace(/^﻿/,'');
-    if(raw.trim().startsWith('<')){ console.warn('[Followup] Retornou HTML — planilha não pública?'); return; }
-
+    if(!res.ok) return [];
+    const raw=(await res.text()).replace(/^﻿/,'');
+    if(raw.trim().startsWith('<')) return [];
     const lines=raw.replace(/\r/g,'').split('\n').filter(l=>l.trim());
-    if(lines.length<2){ console.warn('[Followup] Poucas linhas:',lines.length); return; }
+    if(lines.length<2) return [];
 
-    // Auto-detecta se há 1 ou 2 linhas de cabeçalho:
-    // Se "estado" aparece na linha 0 → 1 cabeçalho; caso contrário → 2 cabeçalhos (linha 0 = grupos)
-    const row0vals=parseCSVRow(lines[0]).map(h=>h.replace(/^"|"$/g,'').trim().toLowerCase());
-    const headerIdx=row0vals.some(h=>h.includes('estado'))||row0vals.some(h=>h.includes('presente')) ? 0 : 1;
-    const dataStart=headerIdx+1;
-
-    const headers=parseCSVRow(lines[headerIdx]).map(h=>h.replace(/^"|"$/g,'').trim());
-    console.log('[Followup] headers (linha '+headerIdx+'):', headers);
-    console.log('[Followup] total linhas de dados:', lines.length-dataStart);
-
-    // Busca flexível de coluna por substring (case-insensitive)
+    const headers=parseCSVRow(lines[0]).map(h=>h.replace(/^"|"$/g,'').trim());
     const col=(...keys)=>headers.find(h=>keys.some(k=>h.toLowerCase().includes(k.toLowerCase())))||'';
-
     const COL_ESTADO   = col('estado');
     const COL_PRESENTE = col('presente');
     const COL_MOTIVO   = col('impediu');
     const COL_RET      = headers.find(h=>h.toLowerCase().includes('interesse')&&!h.toLowerCase().includes('evoluir'))||'';
     const COL_APLICOU  = col('aplicar');
-    const COL_CONSTANCIA = col('constância','constancia','const');
+    const COL_CONSTANCIA = col('constânc','constanc');
     const COL_MUDOU    = col('mudou');
     const COL_SEGURANCA = col('seguran');
-    // Dor e evoluir aparecem 2x (não-compareceu e compareceu) — guarda todas as colunas
     const DOR_COLS   = headers.filter(h=>h.toLowerCase().includes('dor'));
     const EVOL_COLS  = headers.filter(h=>h.toLowerCase().includes('evoluir'));
 
-    console.log('[Followup] mapeamento:', {COL_ESTADO,COL_PRESENTE,COL_MOTIVO,COL_RET,COL_APLICOU,DOR_COLS,EVOL_COLS});
-
-    FOLLOWUP.length=0;
-    lines.slice(dataStart).forEach(line=>{
+    const rows=[];
+    lines.slice(1).forEach(line=>{
       const vals=parseCSVRow(line);
       const obj={};
       headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
 
       const estadoRaw=(obj[COL_ESTADO]||'').trim();
-      const e=ESTADO_MAP[estadoRaw]||estadoRaw;
+      const e=ESTADO_MAP[estadoRaw]||estadoRaw||ev.e_default;
       if(!e) return;
 
       const presRaw=(obj[COL_PRESENTE]||'').trim().toUpperCase();
+      if(!presRaw) return;
       const p=presRaw==='OK'||presRaw==='SIM';
 
-      // Para colunas duplicadas (dor, evoluir) pega o primeiro valor não-vazio
-      const dor    = DOR_COLS.map(c=>obj[c]||'').find(v=>v)||'';
-      const evoluir= EVOL_COLS.map(c=>obj[c]||'').find(v=>v)||'';
+      const dor    =DOR_COLS.map(c=>obj[c]||'').find(v=>v)||'';
+      const evoluir=EVOL_COLS.map(c=>obj[c]||'').find(v=>v)||'';
 
-      FOLLOWUP.push({
+      rows.push({
         e, p,
         motivo:     obj[COL_MOTIVO]||'',
         ret:        obj[COL_RET]||'',
@@ -697,8 +693,27 @@ async function loadFollowupData(){
         seguranca:  obj[COL_SEGURANCA]||'',
       });
     });
-    console.log('[Followup] carregados:',FOLLOWUP.length,'rows | presentes:',FOLLOWUP.filter(r=>r.p).length,'| ausentes:',FOLLOWUP.filter(r=>!r.p).length);
-  } catch(err){ console.warn('[Followup] erro:',err); }
+    return rows;
+  } catch(err){ console.warn('[Followup] erro em',ev.sheet||'(default)',err); return []; }
+}
+
+async function loadFollowupData(){
+  const results=await Promise.allSettled(FOLLOWUP_EVENTS.map(fetchOneFollowupSheet));
+  FOLLOWUP.length=0;
+
+  // Deduplicação: aba padrão e abas nomeadas podem conter as mesmas linhas.
+  // Agrupa por e+presente+nome (primeiros 20 chars) para evitar duplicatas.
+  const seen=new Set();
+  results.forEach(r=>{
+    if(r.status!=='fulfilled') return;
+    r.value.forEach(row=>{
+      const key=`${row.e}|${row.p}|${(row.motivo||row.ret||row.dor||row.aplicou||'').substring(0,25)}`;
+      if(seen.has(key)) return;
+      seen.add(key);
+      FOLLOWUP.push(row);
+    });
+  });
+  console.log('[Followup] carregados:',FOLLOWUP.length,'| presentes:',FOLLOWUP.filter(r=>r.p).length,'| ausentes:',FOLLOWUP.filter(r=>!r.p).length);
 }
 
 // ─────────────────────────────────────────────
