@@ -631,14 +631,22 @@ let FOLLOWUP = [];
 
 const FOLLOWUP_SHEET_ID = '1MXnrf3xs2PVmvQ0xbxWhHKnNS2k2kt1oJuVSHOtljkM';
 
-// Uma entrada por aba da planilha. "sheet:''" = aba padrão (sem parâmetro de nome).
-// e_default: estado usado quando a coluna Estado estiver vazia na linha.
+// Uma entrada por aba da planilha de pós-curso.
+// e_default: estado fallback quando a coluna Estado estiver vazia na linha.
 // Adicione novos eventos abaixo conforme forem criados na planilha:
 const FOLLOWUP_EVENTS = [
-  {sheet:'',                                           e_default:'',   m:'Maio'},   // aba padrão — 11/05 RJ+SP+RS
-  {sheet:'Inscritos - Balens Art of Colors - 27/04',   e_default:'RJ', m:'Abril'},
-  {sheet:'Inscritos - Encontro Toctus - 04/05 (SP)',   e_default:'SP', m:'Maio'},
-  // {sheet:'NOME EXATO DA ABA', e_default:'SP', m:'Mês'},
+  {sheet:'Balens Art of Colors - 23/03',                     e_default:'',   m:'Março'},
+  {sheet:'Encontro Toctus - 30/03',                          e_default:'',   m:'Março'},
+  {sheet:'Inscritos - Balens Art of Colors - 27/04',         e_default:'RJ', m:'Abril'},
+  {sheet:'Inscritos - Encontro Toctus - 04/05 (SP)',         e_default:'SP', m:'Maio'},
+  {sheet:'Inscritos - Terapia Capilar (RJ) 11/05',           e_default:'RJ', m:'Maio'},
+  {sheet:'Inscritos - Protocol & Profit (SP) 11/05',         e_default:'SP', m:'Maio'},
+  {sheet:'Inscritos - Terapia Capilar (RS) 18/05',           e_default:'RS', m:'Maio'},
+  // Futuros — adicione quando a aba for criada na planilha:
+  // {sheet:'Inscritos - 25/05 (SP) Art of Light (Balens)',  e_default:'SP', m:'Maio'},
+  // {sheet:'Inscritos - 25/05 (RJ) Art of Light (Balens)',  e_default:'RJ', m:'Maio'},
+  // {sheet:'Inscritos - 08/06 (RJ) Patologias & Protocolos',e_default:'RJ', m:'Junho'},
+  // {sheet:'Inscritos - 08/06 (SP) Patologias & Protocolos',e_default:'SP', m:'Junho'},
 ];
 
 async function fetchOneFollowupSheet(ev){
@@ -701,15 +709,17 @@ async function loadFollowupData(){
   const results=await Promise.allSettled(FOLLOWUP_EVENTS.map(fetchOneFollowupSheet));
   FOLLOWUP.length=0;
 
-  // Deduplicação: aba padrão e abas nomeadas podem conter as mesmas linhas.
-  // Agrupa por e+presente+nome (primeiros 20 chars) para evitar duplicatas.
+  // Deduplicação: só deduplica linhas COM conteúdo (linhas vazias são ignoradas no display).
   const seen=new Set();
   results.forEach(r=>{
     if(r.status!=='fulfilled') return;
     r.value.forEach(row=>{
-      const key=`${row.e}|${row.p}|${(row.motivo||row.ret||row.dor||row.aplicou||'').substring(0,25)}`;
-      if(seen.has(key)) return;
-      seen.add(key);
+      const content=row.motivo||row.ret||row.dor||row.evoluir||row.aplicou||'';
+      if(content){
+        const key=`${row.e}|${row.p}|${content.substring(0,30)}`;
+        if(seen.has(key)) return;
+        seen.add(key);
+      }
       FOLLOWUP.push(row);
     });
   });
