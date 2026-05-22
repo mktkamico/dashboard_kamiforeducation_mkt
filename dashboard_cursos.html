@@ -564,10 +564,16 @@ async function loadSheetData(){
   const overlay=document.getElementById('loading-overlay');
   overlay.style.display='flex';
   try {
-    const res=await fetch(SHEET_CSV_URL);
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const text=(await res.text()).replace(/^﻿/,''); // strip BOM
-    ALL=parseCSV(text).map(mapRow).filter(r=>r.c&&r.e&&r.nps>0);
+    // Busca NPS e inscritos em paralelo para carregar mais rápido
+    const [npsResult] = await Promise.allSettled([
+      fetch(SHEET_CSV_URL).then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); }),
+      loadEnrollmentData(),
+      loadFollowupData()
+    ]);
+    if(npsResult.status==='fulfilled'){
+      const text=npsResult.value.replace(/^﻿/,'');
+      ALL=parseCSV(text).map(mapRow).filter(r=>r.c&&r.e&&r.nps>0);
+    }
     overlay.style.display='none';
     updateAll();
   } catch(err){
@@ -599,7 +605,7 @@ const CURSOS_COLORS = [
   '#6ab0f7','#7c6af7','#f76a8c'
 ];
 
-const ENROLLMENT = [
+let ENROLLMENT = [
   {c:'27/04 · RJ — Virginia Nascimento',             e:'RJ', m:'Abril', lbl:'27/04 RJ — Virginia',  inscritos:24, presentes:12, faltaram:12},
   {c:'27/04 · RS — Anderson Claro',                   e:'RS', m:'Abril', lbl:'27/04 RS — Anderson',  inscritos:17, presentes:8,  faltaram:9},
   {c:'27/04 · SP — Beto, Dani, Luiza e Paula',        e:'SP', m:'Abril', lbl:'27/04 SP — Beto+',     inscritos:30, presentes:16, faltaram:14},
@@ -610,11 +616,99 @@ const ENROLLMENT = [
 ];
 
 // ─────────────────────────────────────────────
-// PÓS-CURSO — pesquisa com quem não foi e quem foi
+// PÓS-CURSO — carregado dinamicamente da planilha
 // p: false = não compareceu | true = compareceu
 // ─────────────────────────────────────────────
-const FOLLOWUP = [
+let FOLLOWUP = [];
+
+const FOLLOWUP_SHEET_ID = '1MXnrf3xs2PVmvQ0xbxWhHKnNS2k2kt1oJuVSHOtljkM';
+
+async function loadFollowupData(){
+  try {
+    const url=`https://docs.google.com/spreadsheets/d/${FOLLOWUP_SHEET_ID}/gviz/tq?tqx=out:csv`;
+    const res=await fetch(url);
+    if(!res.ok) return;
+    const text=(await res.text()).replace(/^﻿/,'');
+    const lines=text.replace(/\r/g,'').split('\n').filter(l=>l.trim());
+    // Linha 0 = cabeçalhos de grupo (DADOS BÁSICOS / NÃO COMPARECEU / COMPARECEU)
+    // Linha 1 = nomes reais das colunas
+    if(lines.length<3) return;
+    const headers=parseCSVRow(lines[1]).map(h=>h.replace(/^"|"$/g,'').trim());
+    const rows=lines.slice(2).map(line=>{
+      const vals=parseCSVRow(line);
+      const obj={};
+      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+      return obj;
+    });
+    FOLLOWUP.length=0;
+    rows.forEach(r=>{
+      const estadoRaw=r['Estado:']||'';
+      const e=ESTADO_MAP[estadoRaw]||estadoRaw.trim();
+      if(!e) return;
+      const presRaw=(r['PRESENTE']||'').trim().toUpperCase();
+      const p=presRaw==='OK'||presRaw==='SIM';
+      FOLLOWUP.push({
+        e,
+        p,
+        // não compareceu
+        motivo:  r['PERGUNTA1 - o que impediu?']||'',
+        ret:     r['PERGUNTA 2 - interesse']||'',
+        // dor e evoluir: colunas diferentes para cada grupo — usa o que tiver preenchido
+        dor:     r['PERGUNTA 3 - dor do salão']||r['PERGUNTA 6 - dor do salão']||'',
+        evoluir: r['PERGUNTA 4 - interesse em evoluir']||r['PERGUNTA 7 - interesse em evoluir']||'',
+        // compareceu
+        aplicou:    r['PERGUNTA1 - conseguiu aplicar']||'',
+        constancia: r['PERGUNTA 2 - constância ']||'',
+        mudou:      r['PERGUNTA 3 - o que mudou?']||'',
+        seguranca:  r['PERGUNTA 5 - segurança']||'',
+      });
+    });
+  } catch(err){ console.warn('Followup load error:',err); }
+}
+
+// ─────────────────────────────────────────────
+// INSCRITOS DINÂMICO — planilha de inscritos por evento
+// ─────────────────────────────────────────────
+const ENROLLMENT_SHEET_ID = '1I6amIV9LMAI_NZe-W96CmcSLngBs1zxpoXnF2ZrgJhI';
+
+// Adicione novos eventos aqui: o campo "sheet" deve ser o nome exato da aba na planilha
+const ENROLLMENT_EVENTS = [
+  {sheet:'25/05 (SP) Art of Light (Balens)', c:'25/05 · SP — Art of Light (Balens)', e:'SP', m:'Maio', lbl:'25/05 SP — Art of Light'},
+  {sheet:'25/05 (RJ) Art of Light (Balens)', c:'25/05 · RJ — Art of Light (Balens)', e:'RJ', m:'Maio', lbl:'25/05 RJ — Art of Light'},
+  {sheet:'08/06 RJ Patologias & Protocolos', c:'08/06 · RJ — Patologias & Protocolos', e:'RJ', m:'Junho', lbl:'08/06 RJ — Patologias'},
+  {sheet:'08/06 SP Patologias & Protocolos', c:'08/06 · SP — Patologias & Protocolos', e:'SP', m:'Junho', lbl:'08/06 SP — Patologias'},
+  // Adicione novos eventos abaixo conforme forem criados na planilha:
+  // {sheet:'NOME EXATO DA ABA', c:'dd/mm · UF — Nome', e:'SP', m:'Mês', lbl:'dd/mm UF — Nome'},
 ];
+
+async function fetchOneEnrollmentSheet(ev){
+  try {
+    const url=`https://docs.google.com/spreadsheets/d/${ENROLLMENT_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(ev.sheet)}`;
+    const res=await fetch(url);
+    if(!res.ok) return null;
+    const text=(await res.text()).replace(/^﻿/,'');
+    const rows=parseCSV(text).filter(r=>{
+      const nome=(r['Nome']||'').trim();
+      const pres=(r['PRESENÇA']||'').trim().toUpperCase();
+      return nome && pres!=='NOVO INSCRITO';
+    });
+    if(!rows.length) return null;
+    const inscritos=rows.length;
+    const presentes=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='SIM').length;
+    const nao=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='NÃO').length;
+    return {...ev, inscritos, presentes, faltaram: nao||Math.max(0,inscritos-presentes)};
+  } catch(e){ return null; }
+}
+
+async function loadEnrollmentData(){
+  const results=await Promise.allSettled(ENROLLMENT_EVENTS.map(fetchOneEnrollmentSheet));
+  results.forEach(r=>{
+    if(r.status!=='fulfilled'||!r.value) return;
+    const v=r.value;
+    const idx=ENROLLMENT.findIndex(e=>e.c===v.c);
+    if(idx>=0) ENROLLMENT[idx]=v; else ENROLLMENT.push(v);
+  });
+}
 
 // ─────────────────────────────────────────────
 // FILTER STATE
