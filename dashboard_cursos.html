@@ -461,6 +461,19 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
     <div id="fu-aplicou-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px"></div>
     <p id="fu-aplicou-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
   </div>
+
+  <!-- Gráficos pós-curso -->
+  <div class="fu-grid-2" style="margin-top:16px">
+    <div class="fu-card">
+      <div class="fu-card-title">Motivos de ausência — recorrências</div>
+      <div style="position:relative;height:210px"><canvas id="chartMotivos"></canvas></div>
+      <p id="chartMotivos-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
+    </div>
+    <div class="fu-card">
+      <div class="fu-card-title">Interesse em retornar</div>
+      <div style="position:relative;height:210px"><canvas id="chartRetornoFu"></canvas></div>
+    </div>
+  </div>
 </div>
 
 </div><!-- /page-pos-curso -->
@@ -471,10 +484,24 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 <div class="fu-section">
   <h2>Mapeamento de Dores &amp; Necessidades</h2>
 
+  <!-- Gráficos dores & evoluir -->
+  <div class="fu-grid-2" style="margin-bottom:16px">
+    <div class="fu-card">
+      <div class="fu-card-title">Dores mais recorrentes</div>
+      <div style="position:relative;height:240px"><canvas id="chartDoresBar"></canvas></div>
+      <p id="chartDoresBar-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
+    </div>
+    <div class="fu-card">
+      <div class="fu-card-title">Áreas de interesse em evoluir</div>
+      <div style="position:relative;height:240px"><canvas id="chartEvolBar"></canvas></div>
+      <p id="chartEvolBar-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
+    </div>
+  </div>
+
   <div class="fu-grid">
     <!-- Dores do salão -->
     <div class="fu-card">
-      <div class="fu-card-title">Principais dores do salão</div>
+      <div class="fu-card-title">Principais dores do salão — falas</div>
       <div class="fu-tags" id="fu-dores"></div>
       <div id="fu-dores-quotes" style="margin-top:10px"></div>
       <p id="fu-dores-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
@@ -482,7 +509,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
     <!-- Interesse em evoluir -->
     <div class="fu-card">
-      <div class="fu-card-title">Áreas de interesse em evoluir</div>
+      <div class="fu-card-title">Áreas de interesse em evoluir — falas</div>
       <div class="fu-tags" id="fu-evoluir"></div>
       <div id="fu-evoluir-quotes" style="margin-top:10px"></div>
       <p id="fu-evoluir-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
@@ -770,6 +797,36 @@ async function loadEnrollmentData(){
   });
 }
 
+// ── Charts pós-curso & dores (inicializados vazios, atualizados em updateFollowup)
+const hBarOpts=()=>({
+  indexAxis:'y',responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} menções`}}},
+  scales:{
+    x:{ticks:{color:'#c4b8b9',stepSize:1},grid:{color:'#3a3334'},beginAtZero:true,border:{display:false}},
+    y:{ticks:{color:'#c4b8b9',font:{size:11}},grid:{display:false},border:{display:false}}
+  }
+});
+C.motivos=new Chart(document.getElementById('chartMotivos').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#f76a8c',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
+C.retornoFu=new Chart(document.getElementById('chartRetornoFu').getContext('2d'),{
+  type:'doughnut',
+  data:{labels:['Querem retornar','Não querem'],datasets:[{data:[0,0],backgroundColor:['#6af7c8','#f76a8c'],borderWidth:0,hoverOffset:6}]},
+  options:{...donutOpts('bottom'),responsive:true,maintainAspectRatio:false}
+});
+C.doresBar=new Chart(document.getElementById('chartDoresBar').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#7c6af7',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
+C.evolBar=new Chart(document.getElementById('chartEvolBar').getContext('2d'),{
+  type:'bar',
+  data:{labels:[],datasets:[{data:[],backgroundColor:'#f7c26a',borderRadius:5,borderSkipped:false,borderWidth:0}]},
+  options:hBarOpts()
+});
+
 // ─────────────────────────────────────────────
 // FILTER STATE
 // ─────────────────────────────────────────────
@@ -1026,6 +1083,7 @@ function updateAll(){
 // ─────────────────────────────────────────────
 const KEYWORDS_DOR = ['marketing','financeiro','precificação','precificacao','gestão','gestao','equipe','corte','mechas','colorimetria','constância','constancia','cliente','produto','técnica','tecnica','terapia capilar','vendas','atendimento'];
 const KEYWORDS_EVOL = ['marketing','financeiro','precificação','precificacao','gestão','gestao','terapia capilar','mechas','corte','colorimetria','vendas','equipe','técnica','tecnica'];
+const KEYWORDS_MOTIVO = ['saúde','doença','acidente','hospital','mal estar','virose','acamada','locomoção','distância','transporte','carro','trabalho','compromisso','agenda','horário','pessoal','particular','familiar','financeiro','viagem','esqueceu'];
 
 function normTxt(t){return t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
 
@@ -1136,6 +1194,43 @@ function updateFollowup(){
   aplicEl.innerHTML='';
   document.getElementById('fu-aplicou-empty').style.display=foi.filter(r=>r.aplicou).length?'none':'block';
   foi.filter(r=>r.aplicou).forEach(r=>aplicEl.appendChild(renderFuQuote(r.aplicou,'#6af7c8',r.e)));
+
+  // ── Gráfico: Motivos de ausência
+  const motivoTexts=nao.map(r=>r.motivo).filter(Boolean);
+  let motivoPairs=countKeywords(motivoTexts,KEYWORDS_MOTIVO).slice(0,7);
+  // fallback: se nenhum keyword bateu, agrupa por texto direto
+  if(!motivoPairs.length){
+    const mc={};
+    motivoTexts.forEach(t=>{ const k=normTxt(t).substring(0,40); if(!mc[k])mc[k]={lbl:t,n:0}; mc[k].n++; });
+    motivoPairs=Object.values(mc).sort((a,b)=>b.n-a.n).slice(0,7).map(r=>[r.lbl,r.n]);
+  }
+  const hasMotivos=motivoPairs.length>0;
+  document.getElementById('chartMotivos-empty').style.display=hasMotivos?'none':'block';
+  document.getElementById('chartMotivos').style.display=hasMotivos?'block':'none';
+  C.motivos.data.labels=motivoPairs.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
+  C.motivos.data.datasets[0].data=motivoPairs.map(([,v])=>v);
+  C.motivos.update();
+
+  // ── Gráfico: Interesse em retornar (donut)
+  C.retornoFu.data.datasets[0].data=[retSim.length,Math.max(0,nao.length-retSim.length)];
+  C.retornoFu.update();
+
+  // ── Gráficos: Dores & Evoluir (barras horizontais)
+  const doresKws=countKeywords(allDores,KEYWORDS_DOR).slice(0,8);
+  const hasDoresChart=doresKws.length>0;
+  document.getElementById('chartDoresBar-empty').style.display=hasDoresChart?'none':'block';
+  document.getElementById('chartDoresBar').style.display=hasDoresChart?'block':'none';
+  C.doresBar.data.labels=doresKws.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
+  C.doresBar.data.datasets[0].data=doresKws.map(([,v])=>v);
+  C.doresBar.update();
+
+  const evolKws=countKeywords(allEvol,KEYWORDS_EVOL).slice(0,8);
+  const hasEvolChart=evolKws.length>0;
+  document.getElementById('chartEvolBar-empty').style.display=hasEvolChart?'none':'block';
+  document.getElementById('chartEvolBar').style.display=hasEvolChart?'block':'none';
+  C.evolBar.data.labels=evolKws.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
+  C.evolBar.data.datasets[0].data=evolKws.map(([,v])=>v);
+  C.evolBar.update();
 }
 
 // ── PAGE TABS ────────────────────────────────
