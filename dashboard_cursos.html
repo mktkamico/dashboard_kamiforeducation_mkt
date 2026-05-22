@@ -283,7 +283,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
 <!-- Enrollment KPIs -->
 <div class="kpi-strip" id="enroll-strip" style="margin-bottom:20px">
-  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">204</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
+  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">204</div><div class="kpi-sub" id="kpi-inscritos-sub">em todos os eventos</div></div>
   <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">120</div><div class="kpi-sub" id="kpi-presentes-sub">de 204 inscritos</div></div>
   <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">59%</div><div class="kpi-sub">do total inscrito</div></div>
   <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">84</div><div class="kpi-sub" id="kpi-faltaram-sub">de 204 inscritos</div></div>
@@ -291,9 +291,8 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
 <!-- Inscritos × Presença -->
 <div class="card" style="margin-bottom:20px" id="card-presenca">
-  <h2>Inscritos × Presentes × Faltaram <span style="font-size:.7rem;color:var(--accent4)">(4 eventos com dados de presença)</span></h2>
+  <h2>Inscritos × Presentes × Faltaram <span id="presenca-subtitle" style="font-size:.7rem;color:var(--accent4)"></span></h2>
   <div class="chart-wrap tall"><canvas id="chartPresenca"></canvas></div>
-  <p style="font-size:.72rem;color:var(--muted);margin-top:14px;text-align:center">* Dados de presença disponíveis para: 27/04 RJ (Virginia Nascimento), 27/04 RS (Anderson Claro), 27/04 SP (Beto, Dani, Luiza e Paula) e 04/05 SP (Encontro Toctus c/ Hellen Anício)</p>
 </div>
 
 </div><!-- /page-inscritos -->
@@ -774,16 +773,16 @@ async function fetchOneEnrollmentSheet(ev){
     const res=await fetch(url);
     if(!res.ok) return null;
     const text=(await res.text()).replace(/^﻿/,'');
-    const rows=parseCSV(text).filter(r=>{
-      const nome=(r['Nome']||'').trim();
-      const pres=(r['PRESENÇA']||'').trim().toUpperCase();
-      return nome && pres!=='NOVO INSCRITO';
-    });
+    if(text.trim().startsWith('<')) return null;
+    const rows=parseCSV(text).filter(r=>(r['Nome']||'').trim());
     if(!rows.length) return null;
     const inscritos=rows.length;
     const presentes=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='SIM').length;
     const nao=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='NÃO').length;
-    return {...ev, inscritos, presentes, faltaram: nao||Math.max(0,inscritos-presentes)};
+    // hasAttendance: true apenas quando presença foi efetivamente registrada
+    const hasAttendance = presentes > 0 || nao > 0;
+    const faltaram = hasAttendance ? (nao > 0 ? nao : Math.max(0, inscritos - presentes)) : 0;
+    return {...ev, inscritos, presentes: hasAttendance ? presentes : 0, faltaram, hasAttendance};
   } catch(e){ return null; }
 }
 
@@ -1045,14 +1044,21 @@ function updateAll(){
     (!F.curso.size||F.curso.has(r.c))
   );
   const totInsc=fe.reduce((s,r)=>s+r.inscritos,0);
-  const totPres=fe.reduce((s,r)=>s+r.presentes,0);
-  const totFalt=fe.reduce((s,r)=>s+r.faltaram,0);
+  const feAtt=fe.filter(r=>r.hasAttendance!==false&&(r.presentes>0||r.faltaram>0));
+  const totPres=feAtt.reduce((s,r)=>s+r.presentes,0);
+  const totFalt=feAtt.reduce((s,r)=>s+r.faltaram,0);
+  const totInscAtt=feAtt.reduce((s,r)=>s+r.inscritos,0);
   document.getElementById('kpi-inscritos').textContent=fe.length?totInsc:'—';
-  document.getElementById('kpi-presentes').textContent=fe.length?totPres:'—';
-  document.getElementById('kpi-presentes-sub').textContent=fe.length?`de ${totInsc} inscritos`:'';
-  document.getElementById('kpi-taxa').textContent=(fe.length&&totInsc)?Math.round(totPres/totInsc*100)+'%':'—';
-  document.getElementById('kpi-faltaram').textContent=fe.length?totFalt:'—';
-  document.getElementById('kpi-faltaram-sub').textContent=fe.length?`de ${totInsc} inscritos`:'';
+  const kpiInscSub=document.getElementById('kpi-inscritos-sub');
+  if(kpiInscSub) kpiInscSub.textContent=fe.length?`em ${fe.length} evento${fe.length>1?'s':''}`:'em todos os eventos';
+  document.getElementById('kpi-presentes').textContent=feAtt.length?totPres:'—';
+  document.getElementById('kpi-presentes-sub').textContent=feAtt.length?`de ${totInscAtt} com presença`:'';
+  document.getElementById('kpi-taxa').textContent=(feAtt.length&&totInscAtt)?Math.round(totPres/totInscAtt*100)+'%':'—';
+  document.getElementById('kpi-faltaram').textContent=feAtt.length?totFalt:'—';
+  document.getElementById('kpi-faltaram-sub').textContent=feAtt.length?`de ${totInscAtt} com presença`:'';
+  const nSemPres=fe.filter(r=>!r.hasAttendance&&r.presentes===0&&r.faltaram===0).length;
+  const sub=document.getElementById('presenca-subtitle');
+  if(sub) sub.textContent=nSemPres>0?`(${nSemPres} evento${nSemPres>1?'s':''} sem presença registrada)`:'';
   C.presenca.data.labels=fe.map(r=>r.lbl);
   C.presenca.data.datasets[0].data=fe.map(r=>r.inscritos);
   C.presenca.data.datasets[1].data=fe.map(r=>r.presentes);
