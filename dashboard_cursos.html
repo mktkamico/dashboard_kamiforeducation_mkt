@@ -635,43 +635,70 @@ async function loadFollowupData(){
   try {
     const url=`https://docs.google.com/spreadsheets/d/${FOLLOWUP_SHEET_ID}/gviz/tq?tqx=out:csv`;
     const res=await fetch(url);
-    if(!res.ok) return;
-    const text=(await res.text()).replace(/^﻿/,'');
-    const lines=text.replace(/\r/g,'').split('\n').filter(l=>l.trim());
-    // Linha 0 = cabeçalhos de grupo (DADOS BÁSICOS / NÃO COMPARECEU / COMPARECEU)
-    // Linha 1 = nomes reais das colunas
-    if(lines.length<3) return;
-    const headers=parseCSVRow(lines[1]).map(h=>h.replace(/^"|"$/g,'').trim());
-    const rows=lines.slice(2).map(line=>{
+    if(!res.ok){ console.warn('[Followup] HTTP',res.status); return; }
+    const raw=(await res.text()).replace(/^﻿/,'').replace(/^﻿/,'');
+    if(raw.trim().startsWith('<')){ console.warn('[Followup] Retornou HTML — planilha não pública?'); return; }
+
+    const lines=raw.replace(/\r/g,'').split('\n').filter(l=>l.trim());
+    if(lines.length<2){ console.warn('[Followup] Poucas linhas:',lines.length); return; }
+
+    // Auto-detecta se há 1 ou 2 linhas de cabeçalho:
+    // Se "estado" aparece na linha 0 → 1 cabeçalho; caso contrário → 2 cabeçalhos (linha 0 = grupos)
+    const row0vals=parseCSVRow(lines[0]).map(h=>h.replace(/^"|"$/g,'').trim().toLowerCase());
+    const headerIdx=row0vals.some(h=>h.includes('estado'))||row0vals.some(h=>h.includes('presente')) ? 0 : 1;
+    const dataStart=headerIdx+1;
+
+    const headers=parseCSVRow(lines[headerIdx]).map(h=>h.replace(/^"|"$/g,'').trim());
+    console.log('[Followup] headers (linha '+headerIdx+'):', headers);
+    console.log('[Followup] total linhas de dados:', lines.length-dataStart);
+
+    // Busca flexível de coluna por substring (case-insensitive)
+    const col=(...keys)=>headers.find(h=>keys.some(k=>h.toLowerCase().includes(k.toLowerCase())))||'';
+
+    const COL_ESTADO   = col('estado');
+    const COL_PRESENTE = col('presente');
+    const COL_MOTIVO   = col('impediu');
+    const COL_RET      = headers.find(h=>h.toLowerCase().includes('interesse')&&!h.toLowerCase().includes('evoluir'))||'';
+    const COL_APLICOU  = col('aplicar');
+    const COL_CONSTANCIA = col('constância','constancia','const');
+    const COL_MUDOU    = col('mudou');
+    const COL_SEGURANCA = col('seguran');
+    // Dor e evoluir aparecem 2x (não-compareceu e compareceu) — guarda todas as colunas
+    const DOR_COLS   = headers.filter(h=>h.toLowerCase().includes('dor'));
+    const EVOL_COLS  = headers.filter(h=>h.toLowerCase().includes('evoluir'));
+
+    console.log('[Followup] mapeamento:', {COL_ESTADO,COL_PRESENTE,COL_MOTIVO,COL_RET,COL_APLICOU,DOR_COLS,EVOL_COLS});
+
+    FOLLOWUP.length=0;
+    lines.slice(dataStart).forEach(line=>{
       const vals=parseCSVRow(line);
       const obj={};
       headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
-      return obj;
-    });
-    FOLLOWUP.length=0;
-    rows.forEach(r=>{
-      const estadoRaw=r['Estado:']||'';
-      const e=ESTADO_MAP[estadoRaw]||estadoRaw.trim();
+
+      const estadoRaw=(obj[COL_ESTADO]||'').trim();
+      const e=ESTADO_MAP[estadoRaw]||estadoRaw;
       if(!e) return;
-      const presRaw=(r['PRESENTE']||'').trim().toUpperCase();
+
+      const presRaw=(obj[COL_PRESENTE]||'').trim().toUpperCase();
       const p=presRaw==='OK'||presRaw==='SIM';
+
+      // Para colunas duplicadas (dor, evoluir) pega o primeiro valor não-vazio
+      const dor    = DOR_COLS.map(c=>obj[c]||'').find(v=>v)||'';
+      const evoluir= EVOL_COLS.map(c=>obj[c]||'').find(v=>v)||'';
+
       FOLLOWUP.push({
-        e,
-        p,
-        // não compareceu
-        motivo:  r['PERGUNTA1 - o que impediu?']||'',
-        ret:     r['PERGUNTA 2 - interesse']||'',
-        // dor e evoluir: colunas diferentes para cada grupo — usa o que tiver preenchido
-        dor:     r['PERGUNTA 3 - dor do salão']||r['PERGUNTA 6 - dor do salão']||'',
-        evoluir: r['PERGUNTA 4 - interesse em evoluir']||r['PERGUNTA 7 - interesse em evoluir']||'',
-        // compareceu
-        aplicou:    r['PERGUNTA1 - conseguiu aplicar']||'',
-        constancia: r['PERGUNTA 2 - constância ']||'',
-        mudou:      r['PERGUNTA 3 - o que mudou?']||'',
-        seguranca:  r['PERGUNTA 5 - segurança']||'',
+        e, p,
+        motivo:     obj[COL_MOTIVO]||'',
+        ret:        obj[COL_RET]||'',
+        dor, evoluir,
+        aplicou:    obj[COL_APLICOU]||'',
+        constancia: obj[COL_CONSTANCIA]||'',
+        mudou:      obj[COL_MUDOU]||'',
+        seguranca:  obj[COL_SEGURANCA]||'',
       });
     });
-  } catch(err){ console.warn('Followup load error:',err); }
+    console.log('[Followup] carregados:',FOLLOWUP.length,'rows | presentes:',FOLLOWUP.filter(r=>r.p).length,'| ausentes:',FOLLOWUP.filter(r=>!r.p).length);
+  } catch(err){ console.warn('[Followup] erro:',err); }
 }
 
 // ─────────────────────────────────────────────
