@@ -437,6 +437,19 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
     </div>
   </div>
 
+  <!-- Gráficos pós-curso -->
+  <div class="fu-grid-2" style="margin-bottom:16px">
+    <div class="fu-card">
+      <div class="fu-card-title">Motivos de ausência — recorrências</div>
+      <div style="position:relative;height:210px"><canvas id="chartMotivos"></canvas></div>
+      <p id="chartMotivos-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
+    </div>
+    <div class="fu-card">
+      <div class="fu-card-title">Interesse em retornar</div>
+      <div style="position:relative;height:210px"><canvas id="chartRetornoFu"></canvas></div>
+    </div>
+  </div>
+
   <!-- Motivos + Interesse: linha 50/50 -->
   <div class="fu-grid-2">
     <!-- Motivos de ausência -->
@@ -460,19 +473,6 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
     <div class="fu-card-title">O que conseguiu aplicar (quem foi ao curso)</div>
     <div id="fu-aplicou-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px"></div>
     <p id="fu-aplicou-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
-  </div>
-
-  <!-- Gráficos pós-curso -->
-  <div class="fu-grid-2" style="margin-top:16px">
-    <div class="fu-card">
-      <div class="fu-card-title">Motivos de ausência — recorrências</div>
-      <div style="position:relative;height:210px"><canvas id="chartMotivos"></canvas></div>
-      <p id="chartMotivos-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
-    </div>
-    <div class="fu-card">
-      <div class="fu-card-title">Interesse em retornar</div>
-      <div style="position:relative;height:210px"><canvas id="chartRetornoFu"></canvas></div>
-    </div>
   </div>
 </div>
 
