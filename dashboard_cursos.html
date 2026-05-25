@@ -98,7 +98,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 .tab-btn.active,.tab-btn:hover{background:var(--accent);color:#fff;}
 .quotes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
 .quote-card{border-radius:10px;padding:14px 16px;border-left:4px solid transparent;}
-.quote-card.orange{background:rgba(245,220,0,.07);border-color:#f5dc00;}
+.quote-card.orange{background:rgba(247,151,106,.07);border-color:#f7976a;}
 .quote-card.green{background:rgba(106,247,200,.07);border-color:var(--accent3);}
 .quote-card.purple{background:rgba(124,106,247,.07);border-color:var(--accent);}
 .quote-wrapper.hidden-quote{display:none;}
@@ -159,7 +159,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
       Período de análise: Março — Maio 2026
     </div>
   </div>
-  <span class="badge" id="badge-update" style="background:rgba(0,0,0,.25);color:#f0eee8;">Atualizado: —</span>
+  <span class="badge" style="background:rgba(0,0,0,.25);color:#f0eee8;">Atualizado: 25/05/2026</span>
 </header>
 
 <!-- Page Tabs Navigation -->
@@ -283,7 +283,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
 <!-- Enrollment KPIs -->
 <div class="kpi-strip" id="enroll-strip" style="margin-bottom:20px">
-  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">204</div><div class="kpi-sub" id="kpi-inscritos-sub">em todos os eventos</div></div>
+  <div class="kpi purple"><div class="kpi-label">Total Inscritos</div><div class="kpi-value" id="kpi-inscritos">204</div><div class="kpi-sub">nos eventos com dados de presença</div></div>
   <div class="kpi green"><div class="kpi-label">Total Presentes</div><div class="kpi-value" id="kpi-presentes">120</div><div class="kpi-sub" id="kpi-presentes-sub">de 204 inscritos</div></div>
   <div class="kpi pink"><div class="kpi-label">Taxa de Presença</div><div class="kpi-value" id="kpi-taxa">59%</div><div class="kpi-sub">do total inscrito</div></div>
   <div class="kpi red"><div class="kpi-label">Total Faltaram</div><div class="kpi-value" id="kpi-faltaram">84</div><div class="kpi-sub" id="kpi-faltaram-sub">de 204 inscritos</div></div>
@@ -291,8 +291,9 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
 <!-- Inscritos × Presença -->
 <div class="card" style="margin-bottom:20px" id="card-presenca">
-  <h2>Inscritos × Presentes × Faltaram <span id="presenca-subtitle" style="font-size:.7rem;color:var(--accent4)"></span></h2>
+  <h2>Inscritos × Presentes × Faltaram <span style="font-size:.7rem;color:var(--accent4)">(4 eventos com dados de presença)</span></h2>
   <div class="chart-wrap tall"><canvas id="chartPresenca"></canvas></div>
+  <p style="font-size:.72rem;color:var(--muted);margin-top:14px;text-align:center">* Dados de presença disponíveis para: 27/04 RJ (Virginia Nascimento), 27/04 RS (Anderson Claro), 27/04 SP (Beto, Dani, Luiza e Paula) e 04/05 SP (Encontro Toctus c/ Hellen Anício)</p>
 </div>
 
 </div><!-- /page-inscritos -->
@@ -327,9 +328,9 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 <div class="card" style="margin-bottom:20px">
   <h2>Principais Sugestões &amp; Destaques Qualitativos</h2>
   <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-    <button class="tab-btn active" data-tab="sugestoes">⚠️ Sugestões de Melhoria</button>
-    <button class="tab-btn" data-tab="destaques">⭐⭐⭐ Destaques Positivos</button>
-    <button class="tab-btn" data-tab="equipe">👏 Elogios à Equipe</button>
+    <button class="tab-btn active" data-tab="sugestoes">💡 Sugestões de Melhoria</button>
+    <button class="tab-btn" data-tab="destaques">⭐ Destaques Positivos</button>
+    <button class="tab-btn" data-tab="equipe">🙌 Elogios à Equipe</button>
   </div>
 
   <!-- Sugestões -->
@@ -436,19 +437,6 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
     </div>
   </div>
 
-  <!-- Gráficos pós-curso -->
-  <div class="fu-grid-2" style="margin-bottom:16px">
-    <div class="fu-card">
-      <div class="fu-card-title">Motivos de ausência — recorrências</div>
-      <div style="position:relative;height:210px"><canvas id="chartMotivos"></canvas></div>
-      <p id="chartMotivos-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
-    </div>
-    <div class="fu-card">
-      <div class="fu-card-title">Interesse em retornar</div>
-      <div style="position:relative;height:210px"><canvas id="chartRetornoFu"></canvas></div>
-    </div>
-  </div>
-
   <!-- Motivos + Interesse: linha 50/50 -->
   <div class="fu-grid-2">
     <!-- Motivos de ausência -->
@@ -483,24 +471,10 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 <div class="fu-section">
   <h2>Mapeamento de Dores &amp; Necessidades</h2>
 
-  <!-- Gráficos dores & evoluir -->
-  <div class="fu-grid-2" style="margin-bottom:16px">
-    <div class="fu-card">
-      <div class="fu-card-title">Dores mais recorrentes</div>
-      <div style="position:relative;height:240px"><canvas id="chartDoresBar"></canvas></div>
-      <p id="chartDoresBar-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
-    </div>
-    <div class="fu-card">
-      <div class="fu-card-title">Áreas de interesse em evoluir</div>
-      <div style="position:relative;height:240px"><canvas id="chartEvolBar"></canvas></div>
-      <p id="chartEvolBar-empty" style="font-size:.78rem;color:var(--muted);text-align:center;padding:16px 0;display:none">Sem dados suficientes.</p>
-    </div>
-  </div>
-
   <div class="fu-grid">
     <!-- Dores do salão -->
     <div class="fu-card">
-      <div class="fu-card-title">Principais dores do salão — falas</div>
+      <div class="fu-card-title">Principais dores do salão</div>
       <div class="fu-tags" id="fu-dores"></div>
       <div id="fu-dores-quotes" style="margin-top:10px"></div>
       <p id="fu-dores-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
@@ -508,7 +482,7 @@ header .header-sub strong{color:#f0eee8;font-weight:600;}
 
     <!-- Interesse em evoluir -->
     <div class="fu-card">
-      <div class="fu-card-title">Áreas de interesse em evoluir — falas</div>
+      <div class="fu-card-title">Áreas de interesse em evoluir</div>
       <div class="fu-tags" id="fu-evoluir"></div>
       <div id="fu-evoluir-quotes" style="margin-top:10px"></div>
       <p id="fu-evoluir-empty" style="font-size:.78rem;color:var(--muted);display:none">Sem respostas para exibir.</p>
@@ -590,25 +564,11 @@ async function loadSheetData(){
   const overlay=document.getElementById('loading-overlay');
   overlay.style.display='flex';
   try {
-    // Busca NPS e inscritos em paralelo para carregar mais rápido
-    const [npsResult] = await Promise.allSettled([
-      fetch(SHEET_CSV_URL).then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); }),
-      loadEnrollmentData(),
-      loadFollowupData()
-    ]);
-    if(npsResult.status==='fulfilled'){
-      const text=npsResult.value.replace(/^﻿/,'');
-      ALL=parseCSV(text).map(mapRow).filter(r=>r.c&&r.e&&r.nps>0);
-    }
+    const res=await fetch(SHEET_CSV_URL);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const text=(await res.text()).replace(/^﻿/,''); // strip BOM
+    ALL=parseCSV(text).map(mapRow).filter(r=>r.c&&r.e&&r.nps>0);
     overlay.style.display='none';
-    // Atualiza badge com data/hora do carregamento
-    const now=new Date();
-    const dd=String(now.getDate()).padStart(2,'0');
-    const mm=String(now.getMonth()+1).padStart(2,'0');
-    const yyyy=now.getFullYear();
-    const hh=String(now.getHours()).padStart(2,'0');
-    const mi=String(now.getMinutes()).padStart(2,'0');
-    document.getElementById('badge-update').textContent=`Atualizado: ${dd}/${mm}/${yyyy} ${hh}:${mi}`;
     updateAll();
   } catch(err){
     console.error('Erro ao carregar planilha:',err);
@@ -639,163 +599,47 @@ const CURSOS_COLORS = [
   '#6ab0f7','#7c6af7','#f76a8c'
 ];
 
-let ENROLLMENT = [
-  {c:'27/04 · RJ — Virginia Nascimento',             e:'RJ', m:'Abril', lbl:'27/04 RJ — Virginia',  inscritos:24, presentes:12, faltaram:12},
-  {c:'27/04 · RS — Anderson Claro',                   e:'RS', m:'Abril', lbl:'27/04 RS — Anderson',  inscritos:17, presentes:8,  faltaram:9},
-  {c:'27/04 · SP — Beto, Dani, Luiza e Paula',        e:'SP', m:'Abril', lbl:'27/04 SP — Beto+',     inscritos:30, presentes:16, faltaram:14},
-  {c:'04/05 · SP — Encontro Toctus c/ Hellen Anício', e:'SP', m:'Maio',  lbl:'04/05 SP — Encontro',  inscritos:29, presentes:17, faltaram:12},
-  {c:'11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi',      e:'RJ', m:'Maio',  lbl:'11/05 RJ — Gheuri',    inscritos:37, presentes:27, faltaram:10},
-  {c:'11/05 · SP — Terapia Capilar c/ Ana Soares',           e:'SP', m:'Maio',  lbl:'11/05 SP — Protocol&Profit', inscritos:43, presentes:25, faltaram:18},
-  {c:'18/05 · RS — Terapia Capilar c/ Gheuri Zangelmi',     e:'RS', m:'Maio',  lbl:'18/05 RS — Terapia Capilar', inscritos:24, presentes:15, faltaram:9},
+const ENROLLMENT = [
+  {c:"27/04 · SP — Beto, Dani, Luiza e Paula",e:"SP",m:"Abril",lbl:"27/04 SP — Beto+",inscritos:29,presentes:16,faltaram:13},
+  {c:"27/04 · RJ — Virginia Nascimento",e:"RJ",m:"Abril",lbl:"27/04 RJ — Virginia",inscritos:24,presentes:12,faltaram:12},
+  {c:"27/04 · RS — Anderson Claro",e:"RS",m:"Abril",lbl:"27/04 RS — Anderson",inscritos:17,presentes:8,faltaram:9},
+  {c:"04/05 · SP — Encontro Toctus c/ Hellen Anício",e:"SP",m:"Maio",lbl:"04/05 SP — Encontro",inscritos:29,presentes:17,faltaram:12},
+  {c:"11/05 · RJ — Terapia Capilar c/ Gheuri Zangelmi",e:"RJ",m:"Maio",lbl:"11/05 RJ — Gheuri",inscritos:37,presentes:27,faltaram:10},
+  {c:"11/05 · SP — Terapia Capilar c/ Ana Soares",e:"SP",m:"Maio",lbl:"11/05 SP — Protocol&Profit",inscritos:43,presentes:25,faltaram:18},
+  {c:"18/05 · RS — Terapia Capilar",e:"RS",m:"Maio",lbl:"18/05 RS — Terapia Capilar",inscritos:24,presentes:15,faltaram:9}
 ];
 
 // ─────────────────────────────────────────────
-// PÓS-CURSO — carregado dinamicamente, aba por evento
+// PÓS-CURSO — pesquisa com quem não foi e quem foi
 // p: false = não compareceu | true = compareceu
 // ─────────────────────────────────────────────
-let FOLLOWUP = [];
-
-const FOLLOWUP_SHEET_ID = '1MXnrf3xs2PVmvQ0xbxWhHKnNS2k2kt1oJuVSHOtljkM';
-
-// Uma entrada por aba da planilha de pós-curso.
-// e_default: estado fallback quando a coluna Estado estiver vazia na linha.
-// Adicione novos eventos abaixo conforme forem criados na planilha:
-const FOLLOWUP_EVENTS = [
-  {sheet:'Balens Art of Colors - 23/03',                     e_default:'',   m:'Março'},
-  {sheet:'Encontro Toctus - 30/03',                          e_default:'',   m:'Março'},
-  {sheet:'Inscritos - Balens Art of Colors - 27/04',         e_default:'RJ', m:'Abril'},
-  {sheet:'Inscritos - Encontro Toctus - 04/05 (SP)',         e_default:'SP', m:'Maio'},
-  {sheet:'Inscritos - Terapia Capilar (RJ) 11/05',           e_default:'RJ', m:'Maio'},
-  {sheet:'Inscritos - Protocol & Profit (SP) 11/05',         e_default:'SP', m:'Maio'},
-  {sheet:'Inscritos - Terapia Capilar (RS) 18/05',           e_default:'RS', m:'Maio'},
-  // Futuros — adicione quando a aba for criada na planilha:
-  // {sheet:'Inscritos - 25/05 (SP) Art of Light (Balens)',  e_default:'SP', m:'Maio'},
-  // {sheet:'Inscritos - 25/05 (RJ) Art of Light (Balens)',  e_default:'RJ', m:'Maio'},
-  // {sheet:'Inscritos - 08/06 (RJ) Patologias & Protocolos',e_default:'RJ', m:'Junho'},
-  // {sheet:'Inscritos - 08/06 (SP) Patologias & Protocolos',e_default:'SP', m:'Junho'},
+const FOLLOWUP = [
+  {e:"RJ",p:false,motivo:"",ret:"",dor:"Cortes, eu sinto que preciso me atualizar e colorimetria",evoluir:"Financeiro e marketing",aplicou:""},
+  {e:"SP",p:false,motivo:"",ret:"",dor:"Marketing/Ser constante nas redes",evoluir:"",aplicou:""},
+  {e:"SP",p:false,motivo:"Distância",ret:"sim",dor:"Talvez os iluminados nao pesar na quantidade de  mechas",evoluir:"Gestao e um ponto bom  e precificação",aplicou:""},
+  {e:"RJ",p:true,motivo:"",ret:"",dor:"Eu gostaria de conhecer a coloração, saber sobre as super clareadoras e sobre cobertura de brancos",evoluir:"Marketing",aplicou:"Nada. Não achei o curso explicativo. Eu fui para conhecer a coloração e sai sem saber como ela é. A profissional falou sobre tecnica e não sobre o produto. E se vcs estão apresentando o produto, pelo menos eu penso que tem que falar da consistência, do cheiro, de quanto ele rende, como fica a coloração ao final."},
+  {e:"RJ",p:true,motivo:"",ret:"",dor:"",evoluir:"",aplicou:"o curso foi maravilhoso , didática maravilhosa , adiquiri bastante conhecimento e técnicas inovadoras, ,ainda não consegui realizar o que foi passado , mas em breve estarei realizando … obrigada"},
+  {e:"RJ",p:false,motivo:"número errado",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"RJ",p:false,motivo:"Sofreu um acidente de carro e ficou sem locomoção",ret:"Sim, quero muito participar do próximo",dor:"Marketing",evoluir:"Marketing",aplicou:""},
+  {e:"RJ",p:false,motivo:"estava acamada com uma virose e infelizmente não tive o prazer de comparecer",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"RJ",p:false,motivo:"número errado",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"RJ",p:false,motivo:"Problemas particulares",ret:"Sim, quer participar do próximo",dor:"No momento, minha maior dificuldade é cortar cabelo",evoluir:"Financeiro",aplicou:""},
+  {e:"RJ",p:true,motivo:"",ret:"",dor:"",evoluir:"",aplicou:"Não pode participar do curso todo, assistiu os primeiros minutos e voltou no final para ver os resultados"},
+  {e:"RS",p:true,motivo:"",ret:"",dor:"No momento nada",evoluir:"Marketing",aplicou:"Como ainda não trabalho com mechas não coloquei em prática muita coisa"},
+  {e:"RS",p:false,motivo:"acordei com muito mau estar e não consegui sair de casa mas avisei pra Ana",ret:"Sim",dor:"Atualmente mechas",evoluir:"Principalmente o financeiro e marketing",aplicou:""},
+  {e:"RS",p:false,motivo:"número errado",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"RS",p:false,motivo:"número errado",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"RS",p:false,motivo:"Tenho um filho de 3 anos, ele acordou ruim.\nNN a escolinha não fica...\nSomente por esse motivo não pude ir. Queria muito",ret:"Sim",dor:"Tempo de montagens de mechas. \nSaber identificar a técnica certa que a cliente traz como referência.",evoluir:"Financeiro, precificação, marketing, gestão de equipe. Olha, se tivesse uma quinta alternativa eu iria escolher ela tmb kkkk\nSempre precisa-se evoluir",aplicou:""},
+  {e:"SP",p:false,motivo:"me deu uma dor de cabeça muito forte e minha conta do banco bloqueou foi isso",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"SP",p:false,motivo:"Precisei cobrir colega num trabalho",ret:"",dor:"",evoluir:"",aplicou:""},
+  {e:"SP",p:true,motivo:"",ret:"",dor:"Ainda sou uma negação qto à me expor nas redes sociais. E a minha estrutura interna é simples \nO cliente vem até mim por indicação mesmo\nPorém meu layout não enriquece os olhos",evoluir:"Financeiro e precificacao",aplicou:"Fiz a técnica de morena iluminada por enquanto. A técnica de mechas loiro de tinta ainda não"},
+  {e:"SP",p:false,motivo:"Ocorreu um imprevisto",ret:"Sim",dor:"Por enquanto, nenhuma. Conheço as técnicas. Participei do útimo curso",evoluir:"",aplicou:""},
+  {e:"SP",p:false,motivo:"Fiz uma cirurgia e o meu médico não me liberou, mais to doída pra ir na próxima",ret:"Sim",dor:"Pra mim hoje a maior dificuldade é cliente fiel, muita concorrência e produtos e o principal, a gente começa usando produtos e daqui a pouco o mesmo produto está nos mercados e clientes têm acesso",evoluir:"",aplicou:"Marketing"},
+  {e:"SP",p:false,motivo:"Meu cachorro operou, tive que ficar com ele",ret:"sim",dor:"Conseguir estar mais presente nas redes sociais. Tem dificuldade sem aparecer",evoluir:"",aplicou:""},
+  {e:"SP",p:false,motivo:"Acabei não conseguindo comparecer porque já tinha um compromisso no mesmo dia e acabei me esquecendo.",ret:"Sim",dor:"Hoje as vezes é relacionado a colorimetria",evoluir:"",aplicou:"Um pouco de tudo: financeiro, precificação, marketing, gestão de equipe"},
+  {e:"RS",p:false,motivo:"Problemas de saúde",ret:"Sim",dor:"Olha a minha maior dificuldade hoje é a colorimetria, acredito que se a gente não dominar a colorimetria, aprender técnica de mechas ou tratamentos não vai Esclarecer as dúvidas, esses workshop ajuda por que de certa forma estamos aprendendo e conhecendo algo novo, atualizado. Mais um workshop de colorimetria seria muito bom!",evoluir:"",aplicou:"A gestão do salão, acho um ponto importante, organizar o que entra e sai, como cobrar, como se posicionar tanto em equipe quanto na frente da cliente"},
+  {e:"SP",p:false,motivo:"Tive outro compromisso",ret:"",dor:"",evoluir:"",aplicou:""}
 ];
-
-async function fetchOneFollowupSheet(ev){
-  try {
-    const base=`https://docs.google.com/spreadsheets/d/${FOLLOWUP_SHEET_ID}/gviz/tq?tqx=out:csv`;
-    const url=ev.sheet ? base+'&sheet='+encodeURIComponent(ev.sheet) : base;
-    const res=await fetch(url);
-    if(!res.ok) return [];
-    const raw=(await res.text()).replace(/^﻿/,'');
-    if(raw.trim().startsWith('<')) return [];
-    const lines=raw.replace(/\r/g,'').split('\n').filter(l=>l.trim());
-    if(lines.length<2) return [];
-
-    const headers=parseCSVRow(lines[0]).map(h=>h.replace(/^"|"$/g,'').trim());
-    const col=(...keys)=>headers.find(h=>keys.some(k=>h.toLowerCase().includes(k.toLowerCase())))||'';
-    const COL_ESTADO   = col('estado');
-    const COL_PRESENTE = col('presente');
-    const COL_MOTIVO   = col('impediu');
-    const COL_RET      = headers.find(h=>h.toLowerCase().includes('interesse')&&!h.toLowerCase().includes('evoluir'))||'';
-    const COL_APLICOU  = col('aplicar');
-    const COL_CONSTANCIA = col('constânc','constanc');
-    const COL_MUDOU    = col('mudou');
-    const COL_SEGURANCA = col('seguran');
-    const DOR_COLS   = headers.filter(h=>h.toLowerCase().includes('dor'));
-    const EVOL_COLS  = headers.filter(h=>h.toLowerCase().includes('evoluir'));
-
-    const rows=[];
-    lines.slice(1).forEach(line=>{
-      const vals=parseCSVRow(line);
-      const obj={};
-      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
-
-      const estadoRaw=(obj[COL_ESTADO]||'').trim();
-      const e=ESTADO_MAP[estadoRaw]||estadoRaw||ev.e_default;
-      if(!e) return;
-
-      const presRaw=(obj[COL_PRESENTE]||'').trim().toUpperCase();
-      if(!presRaw) return;
-      const p=presRaw==='OK'||presRaw==='SIM';
-
-      const dor    =DOR_COLS.map(c=>obj[c]||'').find(v=>v)||'';
-      const evoluir=EVOL_COLS.map(c=>obj[c]||'').find(v=>v)||'';
-
-      rows.push({
-        e, p,
-        motivo:     obj[COL_MOTIVO]||'',
-        ret:        obj[COL_RET]||'',
-        dor, evoluir,
-        aplicou:    obj[COL_APLICOU]||'',
-        constancia: obj[COL_CONSTANCIA]||'',
-        mudou:      obj[COL_MUDOU]||'',
-        seguranca:  obj[COL_SEGURANCA]||'',
-      });
-    });
-    return rows;
-  } catch(err){ console.warn('[Followup] erro em',ev.sheet||'(default)',err); return []; }
-}
-
-async function loadFollowupData(){
-  const results=await Promise.allSettled(FOLLOWUP_EVENTS.map(fetchOneFollowupSheet));
-  FOLLOWUP.length=0;
-
-  // Deduplicação: só deduplica linhas COM conteúdo (linhas vazias são ignoradas no display).
-  const seen=new Set();
-  results.forEach(r=>{
-    if(r.status!=='fulfilled') return;
-    r.value.forEach(row=>{
-      const content=row.motivo||row.ret||row.dor||row.evoluir||row.aplicou||'';
-      if(content){
-        const key=`${row.e}|${row.p}|${content.substring(0,30)}`;
-        if(seen.has(key)) return;
-        seen.add(key);
-      }
-      FOLLOWUP.push(row);
-    });
-  });
-  console.log('[Followup] carregados:',FOLLOWUP.length,'| presentes:',FOLLOWUP.filter(r=>r.p).length,'| ausentes:',FOLLOWUP.filter(r=>!r.p).length);
-}
-
-// ─────────────────────────────────────────────
-// INSCRITOS DINÂMICO — planilha de inscritos por evento
-// ─────────────────────────────────────────────
-const ENROLLMENT_SHEET_ID = '1I6amIV9LMAI_NZe-W96CmcSLngBs1zxpoXnF2ZrgJhI';
-
-// Adicione novos eventos aqui: o campo "sheet" deve ser o nome exato da aba na planilha
-const ENROLLMENT_EVENTS = [
-  {sheet:'25/05 (SP) Art of Light (Balens)', c:'25/05 · SP — Art of Light (Balens)', e:'SP', m:'Maio', lbl:'25/05 SP — Art of Light'},
-  {sheet:'25/05 (RJ) Art of Light (Balens)', c:'25/05 · RJ — Art of Light (Balens)', e:'RJ', m:'Maio', lbl:'25/05 RJ — Art of Light'},
-  {sheet:'08/06 RJ Patologias & Protocolos', c:'08/06 · RJ — Patologias & Protocolos', e:'RJ', m:'Junho', lbl:'08/06 RJ — Patologias'},
-  {sheet:'08/06 SP Patologias & Protocolos', c:'08/06 · SP — Patologias & Protocolos', e:'SP', m:'Junho', lbl:'08/06 SP — Patologias'},
-  // Adicione novos eventos abaixo conforme forem criados na planilha:
-  // {sheet:'NOME EXATO DA ABA', c:'dd/mm · UF — Nome', e:'SP', m:'Mês', lbl:'dd/mm UF — Nome'},
-];
-
-async function fetchOneEnrollmentSheet(ev){
-  try {
-    const url=`https://docs.google.com/spreadsheets/d/${ENROLLMENT_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(ev.sheet)}`;
-    const res=await fetch(url);
-    if(!res.ok) return null;
-    const text=(await res.text()).replace(/^﻿/,'');
-    if(text.trim().startsWith('<')) return null;
-    const rows=parseCSV(text).filter(r=>(r['Nome']||'').trim());
-    if(!rows.length) return null;
-    const inscritos=rows.length;
-    const presentes=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='SIM').length;
-    const nao=rows.filter(r=>(r['PRESENÇA']||'').trim().toUpperCase()==='NÃO').length;
-    // hasAttendance: true apenas quando presença foi efetivamente registrada
-    const hasAttendance = presentes > 0 || nao > 0;
-    const faltaram = hasAttendance ? (nao > 0 ? nao : Math.max(0, inscritos - presentes)) : 0;
-    return {...ev, inscritos, presentes: hasAttendance ? presentes : 0, faltaram, hasAttendance};
-  } catch(e){ return null; }
-}
-
-async function loadEnrollmentData(){
-  const results=await Promise.allSettled(ENROLLMENT_EVENTS.map(fetchOneEnrollmentSheet));
-  results.forEach(r=>{
-    if(r.status!=='fulfilled'||!r.value) return;
-    const v=r.value;
-    const idx=ENROLLMENT.findIndex(e=>e.c===v.c);
-    if(idx>=0) ENROLLMENT[idx]=v; else ENROLLMENT.push(v);
-  });
-}
-
 
 // ─────────────────────────────────────────────
 // FILTER STATE
@@ -884,36 +728,6 @@ function mkChart(id,type,labels,data,colors,opts){
 }
 
 const donutOpts=(pos)=>({cutout:'62%',plugins:{legend:{position:pos,labels:{color:'#c4b8b9',font:{size:11},boxWidth:10,padding:10}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} (${ctx.chart.data.datasets[0].data.reduce((a,b)=>a+b,0)?Math.round(ctx.raw/ctx.chart.data.datasets[0].data.reduce((a,b)=>a+b,0)*100):0}%)`}}}});
-
-// ── Charts pós-curso & dores (inicializados vazios, atualizados em updateFollowup)
-const hBarOpts=()=>({
-  indexAxis:'y',responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw} menções`}}},
-  scales:{
-    x:{ticks:{color:'#c4b8b9',stepSize:1},grid:{color:'#3a3334'},beginAtZero:true,border:{display:false}},
-    y:{ticks:{color:'#c4b8b9',font:{size:11}},grid:{display:false},border:{display:false}}
-  }
-});
-C.motivos=new Chart(document.getElementById('chartMotivos').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#f76a8c',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
-C.retornoFu=new Chart(document.getElementById('chartRetornoFu').getContext('2d'),{
-  type:'doughnut',
-  data:{labels:['Querem retornar','Não querem'],datasets:[{data:[0,0],backgroundColor:['#6af7c8','#f76a8c'],borderWidth:0,hoverOffset:6}]},
-  options:{...donutOpts('bottom'),responsive:true,maintainAspectRatio:false}
-});
-C.doresBar=new Chart(document.getElementById('chartDoresBar').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#7c6af7',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
-C.evolBar=new Chart(document.getElementById('chartEvolBar').getContext('2d'),{
-  type:'bar',
-  data:{labels:[],datasets:[{data:[],backgroundColor:'#f7c26a',borderRadius:5,borderSkipped:false,borderWidth:0}]},
-  options:hBarOpts()
-});
 
 C.perfil=mkChart('chartPerfil','doughnut',
   ['Cabeleireiro','Dono Salão + Cab.','Dono de Salão','Terapeuta Capilar','Auxiliar','Outros'],
@@ -1044,21 +858,14 @@ function updateAll(){
     (!F.curso.size||F.curso.has(r.c))
   );
   const totInsc=fe.reduce((s,r)=>s+r.inscritos,0);
-  const feAtt=fe.filter(r=>r.hasAttendance!==false&&(r.presentes>0||r.faltaram>0));
-  const totPres=feAtt.reduce((s,r)=>s+r.presentes,0);
-  const totFalt=feAtt.reduce((s,r)=>s+r.faltaram,0);
-  const totInscAtt=feAtt.reduce((s,r)=>s+r.inscritos,0);
+  const totPres=fe.reduce((s,r)=>s+r.presentes,0);
+  const totFalt=fe.reduce((s,r)=>s+r.faltaram,0);
   document.getElementById('kpi-inscritos').textContent=fe.length?totInsc:'—';
-  const kpiInscSub=document.getElementById('kpi-inscritos-sub');
-  if(kpiInscSub) kpiInscSub.textContent=fe.length?`em ${fe.length} evento${fe.length>1?'s':''}`:'em todos os eventos';
-  document.getElementById('kpi-presentes').textContent=feAtt.length?totPres:'—';
-  document.getElementById('kpi-presentes-sub').textContent=feAtt.length?`de ${totInscAtt} com presença`:'';
-  document.getElementById('kpi-taxa').textContent=(feAtt.length&&totInscAtt)?Math.round(totPres/totInscAtt*100)+'%':'—';
-  document.getElementById('kpi-faltaram').textContent=feAtt.length?totFalt:'—';
-  document.getElementById('kpi-faltaram-sub').textContent=feAtt.length?`de ${totInscAtt} com presença`:'';
-  const nSemPres=fe.filter(r=>!r.hasAttendance&&r.presentes===0&&r.faltaram===0).length;
-  const sub=document.getElementById('presenca-subtitle');
-  if(sub) sub.textContent=nSemPres>0?`(${nSemPres} evento${nSemPres>1?'s':''} sem presença registrada)`:'';
+  document.getElementById('kpi-presentes').textContent=fe.length?totPres:'—';
+  document.getElementById('kpi-presentes-sub').textContent=fe.length?`de ${totInsc} inscritos`:'';
+  document.getElementById('kpi-taxa').textContent=(fe.length&&totInsc)?Math.round(totPres/totInsc*100)+'%':'—';
+  document.getElementById('kpi-faltaram').textContent=fe.length?totFalt:'—';
+  document.getElementById('kpi-faltaram-sub').textContent=fe.length?`de ${totInsc} inscritos`:'';
   C.presenca.data.labels=fe.map(r=>r.lbl);
   C.presenca.data.datasets[0].data=fe.map(r=>r.inscritos);
   C.presenca.data.datasets[1].data=fe.map(r=>r.presentes);
@@ -1090,7 +897,6 @@ function updateAll(){
 // ─────────────────────────────────────────────
 const KEYWORDS_DOR = ['marketing','financeiro','precificação','precificacao','gestão','gestao','equipe','corte','mechas','colorimetria','constância','constancia','cliente','produto','técnica','tecnica','terapia capilar','vendas','atendimento'];
 const KEYWORDS_EVOL = ['marketing','financeiro','precificação','precificacao','gestão','gestao','terapia capilar','mechas','corte','colorimetria','vendas','equipe','técnica','tecnica'];
-const KEYWORDS_MOTIVO = ['saúde','doença','acidente','hospital','mal estar','virose','acamada','locomoção','distância','transporte','carro','trabalho','compromisso','agenda','horário','pessoal','particular','familiar','financeiro','viagem','esqueceu'];
 
 function normTxt(t){return t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
 
@@ -1201,43 +1007,6 @@ function updateFollowup(){
   aplicEl.innerHTML='';
   document.getElementById('fu-aplicou-empty').style.display=foi.filter(r=>r.aplicou).length?'none':'block';
   foi.filter(r=>r.aplicou).forEach(r=>aplicEl.appendChild(renderFuQuote(r.aplicou,'#6af7c8',r.e)));
-
-  // ── Gráfico: Motivos de ausência
-  const motivoTexts=nao.map(r=>r.motivo).filter(Boolean);
-  let motivoPairs=countKeywords(motivoTexts,KEYWORDS_MOTIVO).slice(0,7);
-  // fallback: se nenhum keyword bateu, agrupa por texto direto
-  if(!motivoPairs.length){
-    const mc={};
-    motivoTexts.forEach(t=>{ const k=normTxt(t).substring(0,40); if(!mc[k])mc[k]={lbl:t,n:0}; mc[k].n++; });
-    motivoPairs=Object.values(mc).sort((a,b)=>b.n-a.n).slice(0,7).map(r=>[r.lbl,r.n]);
-  }
-  const hasMotivos=motivoPairs.length>0;
-  document.getElementById('chartMotivos-empty').style.display=hasMotivos?'none':'block';
-  document.getElementById('chartMotivos').style.display=hasMotivos?'block':'none';
-  C.motivos.data.labels=motivoPairs.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
-  C.motivos.data.datasets[0].data=motivoPairs.map(([,v])=>v);
-  C.motivos.update();
-
-  // ── Gráfico: Interesse em retornar (donut)
-  C.retornoFu.data.datasets[0].data=[retSim.length,Math.max(0,nao.length-retSim.length)];
-  C.retornoFu.update();
-
-  // ── Gráficos: Dores & Evoluir (barras horizontais)
-  const doresKws=countKeywords(allDores,KEYWORDS_DOR).slice(0,8);
-  const hasDoresChart=doresKws.length>0;
-  document.getElementById('chartDoresBar-empty').style.display=hasDoresChart?'none':'block';
-  document.getElementById('chartDoresBar').style.display=hasDoresChart?'block':'none';
-  C.doresBar.data.labels=doresKws.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
-  C.doresBar.data.datasets[0].data=doresKws.map(([,v])=>v);
-  C.doresBar.update();
-
-  const evolKws=countKeywords(allEvol,KEYWORDS_EVOL).slice(0,8);
-  const hasEvolChart=evolKws.length>0;
-  document.getElementById('chartEvolBar-empty').style.display=hasEvolChart?'none':'block';
-  document.getElementById('chartEvolBar').style.display=hasEvolChart?'block':'none';
-  C.evolBar.data.labels=evolKws.map(([k])=>k.charAt(0).toUpperCase()+k.slice(1));
-  C.evolBar.data.datasets[0].data=evolKws.map(([,v])=>v);
-  C.evolBar.update();
 }
 
 // ── PAGE TABS ────────────────────────────────
